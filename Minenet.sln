@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.8.34330.188
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Web", "Web\Web.csproj", "{AE065C3D-9D67-451E-8898-4C96991A1DD7}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{ECF383AF-065D-4B0C-B66B-3DEF5CF537A1}"
 	ProjectSection(SolutionItems) = preProject
 		.editorconfig = .editorconfig
 		.gitignore = .gitignore
 	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcWeb", "MvcWeb\MvcWeb.csproj", "{53511D08-00BC-46EF-8363-1360B9641F95}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -17,10 +17,10 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{AE065C3D-9D67-451E-8898-4C96991A1DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AE065C3D-9D67-451E-8898-4C96991A1DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AE065C3D-9D67-451E-8898-4C96991A1DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AE065C3D-9D67-451E-8898-4C96991A1DD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{53511D08-00BC-46EF-8363-1360B9641F95}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{53511D08-00BC-46EF-8363-1360B9641F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{53511D08-00BC-46EF-8363-1360B9641F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{53511D08-00BC-46EF-8363-1360B9641F95}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
