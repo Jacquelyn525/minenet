@@ -9,6 +9,7 @@ using FluentValidation.AspNetCore;
 using Newtonsoft.Json.Serialization;
 
 using Serilog;
+using MvcWeb.WS;
 
 
 #region Logger
@@ -81,7 +82,7 @@ try {
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
   }
-  
+
 
   #region Templated MVC
 
@@ -92,13 +93,26 @@ try {
 
   app.UseAuthorization();
 
+  #endregion
+
+#pragma warning disable ASP0014 // Suggest using top level route registrations
+  app.UseEndpoints(endpoints => {
+    endpoints.MapHub<MineNetHub>("/ws");
+  });
+#pragma warning restore ASP0014 // Suggest using top level route registrations
+
+
+  #region Templated MVC
+
   app.MapControllerRoute(
       name: "default",
       pattern: "{controller=Home}/{action=Index}/{id?}");
 
   app.Run();
 
+
   #endregion
+
 
 } catch (Exception ex) {
   Log.Fatal(ex, "Unhandled Exception");
