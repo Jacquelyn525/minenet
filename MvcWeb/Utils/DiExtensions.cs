@@ -2,7 +2,7 @@ using System.Reflection;
 using System.Runtime.InteropServices;
 using System.Runtime.Versioning;
 
-using MineNet.Api.Services.ScheduledTasks;
+//using MineNet.Api.Services.ScheduledTasks;
 
 using MvcWeb.Core.Data;
 
