@@ -2,9 +2,8 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 using Serilog;
-
-using MvcWeb.Models;
 using ILogger = Serilog.ILogger;
+using MvcWeb.Models.WS;
 
 namespace MvcWeb.WS {
 

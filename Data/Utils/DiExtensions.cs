@@ -4,7 +4,7 @@ using System.Runtime.Versioning;
 
 //using MineNet.Api.Services.ScheduledTasks;
 
-using MvcWeb.Core.Data;
+using MvcWeb;
 
 namespace Microsoft.Extensions.DependencyInjection {
 
@@ -12,7 +12,7 @@ namespace Microsoft.Extensions.DependencyInjection {
   public static class DiExtensions {
 
     public static void RegisterServices(this IServiceCollection services, Assembly assembly, Settings settings) {
-      var sqlServerFactory = typeof(DbAdapterFactory).GetMethod(nameof(DbAdapterFactory.GetConnectionAs));
+      //var sqlServerFactory = typeof(DbAdapterFactory).GetMethod(nameof(DbAdapterFactory.GetConnectionAs));
 
       foreach (var type in assembly.GetExportedTypes()) {
         if (type.GetCustomAttribute<TransientServiceAttribute>() != null) {
@@ -21,15 +21,17 @@ namespace Microsoft.Extensions.DependencyInjection {
           services.AddSingleton(type);
         } else if (type.GetCustomAttribute<ScopedServiceAttribute>() != null) {
           services.AddScoped(type);
-        } else if (type.GetCustomAttribute<DatabaseServiceAttribute>(true) is DatabaseServiceAttribute databaseServiceAttribute) {
-          services.AddTransient(type, (serviceProvider) => {
-
-            var connectionString = settings.ConnectionStrings[databaseServiceAttribute.ConnectionStringName];
-
-            var genericMethod = sqlServerFactory!.MakeGenericMethod(type);
-            return genericMethod.Invoke(null, new object[] { connectionString })!;
-          });
         }
+        //else if (type.GetCustomAttribute<DatabaseServiceAttribute>(true) is DatabaseServiceAttribute databaseServiceAttribute) {
+        //  services.AddTransient(type, (serviceProvider) => {
+
+        //    var connectionString = settings.ConnectionStrings[databaseServiceAttribute.ConnectionStringName];
+
+        //    var genericMethod = sqlServerFactory!.MakeGenericMethod(type);
+        //    return genericMethod.Invoke(null, new object[] { connectionString })!;
+        //  }
+        //);
+        //}
       }
     }
 
