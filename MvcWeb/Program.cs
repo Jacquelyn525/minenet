@@ -37,13 +37,13 @@ try {
 
   #region Entity Framework
 
-  //var connectionString = builder.Configuration.GetConnectionString("MinerEntryContext");
+  var connectionString = builder.Configuration.GetConnectionString("MineNetHistoryContext");
 
-  //builder.Services.AddDbContext<MvcWeb.Data.MinerEntryContext>(options =>
-  //    options.UseSqlServer(connectionString));
+  builder.Services.AddDbContext<MvcWeb.Models.MineNetDBContext>(options =>
+      options.UseSqlServer(connectionString));
 
-  // builder.Services.AddDbContext<MinerEntryContext>(
-  //      options => options.UseSqlServer("name=ConnectionStrings:MinerEntryContext"));
+  //builder.Services.AddDbContext<MinerEntryContext>(
+  //     options => options.UseSqlServer("name=ConnectionStrings:MinerEntryContext"));
 
   builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
