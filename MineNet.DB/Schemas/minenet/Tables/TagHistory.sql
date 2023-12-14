@@ -1,5 +1,6 @@
-CREATE TABLE [minenet].[HistoryTag]
+CREATE TABLE [minenet].[TagHistory]
 (
+	--[HistoryTagId]                                  INT                         IDENTITY(1,1),
   [TagId]                                         INT                         NULL,
   [Address]                                       INT                         NULL,
   [ZoneNumber]                                    INT                         NULL,
@@ -21,4 +22,6 @@ CREATE TABLE [minenet].[HistoryTag]
   [MessageCount]                                  INT                         NULL,
   [MessageAlarm]                                  INT                         NULL,
   [MinerID]                                       FLOAT                       NULL,
+
+  --CONSTRAINT [PK_HistoryTag_HistoryTagId]         PRIMARY KEY CLUSTERED       ([HistoryTagId] ASC),
 )

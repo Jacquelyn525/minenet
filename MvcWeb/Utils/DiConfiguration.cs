@@ -2,7 +2,7 @@ using System.Reflection;
 
 using Microsoft.Extensions.DependencyInjection;
 
-//using FluentValidation;
+using FluentValidation;
 
 namespace MvcWeb {
   public static class DiConfiguration {
@@ -16,7 +16,7 @@ namespace MvcWeb {
 
       var assembly = typeof(DiConfiguration).GetTypeInfo().Assembly;
 
-      //services.AddValidatorsFromAssembly(assembly);
+      services.AddValidatorsFromAssembly(assembly);
       services.RegisterServices(assembly, settings);
     }
   }

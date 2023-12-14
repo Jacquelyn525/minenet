@@ -64,9 +64,6 @@
     <Folder Include="Schema Objects" />
     <Folder Include="Schemas" />
     <Folder Include="Schemas\minenet" />
-    <Folder Include="Schemas\minenet\Programmability" />
-    <Folder Include="Schemas\minenet\Programmability\Stored Procedures" />
-    <Folder Include="Schemas\minenet\Programmability\Types" />
     <Folder Include="Schemas\minenet\Tables" />
     <Folder Include="Schema Objects\Database Level Objects" />
     <Folder Include="Schema Objects\Database Level Objects\Security" />
@@ -74,7 +71,7 @@
     <Folder Include="Schema Objects\Database Level Objects\Security\Schemas" />
   </ItemGroup>
   <ItemGroup>
-    <Build Include="Schemas\minenet\Tables\HistoryTag.sql" />
+    <Build Include="Schemas\minenet\Tables\TagHistory.sql" />
     <Build Include="Schema Objects\Database Level Objects\Security\Schemas\minenet.sql" />
     <Build Include="Schema Objects\Database Level Objects\Security\Users\history-etl-login.sql" />
     <PostDeploy Include="Scripts\Post Deploy\Seed Data\seed_inserts.sql" />

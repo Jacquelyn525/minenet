@@ -2,14 +2,15 @@ using System.Runtime.Versioning;
 using System.Text;
 
 using Microsoft.AspNetCore.Authentication.Negotiate;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Net.Http.Headers;
 
 using FluentValidation.AspNetCore;
-
 using Newtonsoft.Json.Serialization;
-
 using Serilog;
+
 using MvcWeb.WS;
+
 
 
 #region Logger
@@ -23,23 +24,39 @@ Log.Information("Starting up");
 
 #endregion
 
+#region Builder and Settings
+
 var builder = WebApplication.CreateBuilder(args);
 var settings = new Settings(builder.Configuration);
 
+#endregion Builder and Settings
 
 try {
 
-  // Add services to the container.
+  #region Services
+
+  #region Entity Framework
+
+  //var connectionString = builder.Configuration.GetConnectionString("MinerEntryContext");
+
+  //builder.Services.AddDbContext<MvcWeb.Data.MinerEntryContext>(options =>
+  //    options.UseSqlServer(connectionString));
+
+  // builder.Services.AddDbContext<MinerEntryContext>(
+  //      options => options.UseSqlServer("name=ConnectionStrings:MinerEntryContext"));
+
+  builder.Services.AddDatabaseDeveloperPageExceptionFilter();
+
+  #endregion Entity Framework
 
   #region Fluent Validation
   builder.Services.AddFluentValidationAutoValidation()
-    .AddControllers(options => options.AddResponseCacheProfiles(settings))
+    .AddControllers()
     .AddNewtonsoftJson(options => {
       options.SerializerSettings.ContractResolver = new DefaultContractResolver();
     });
   FluentValidation.ValidatorOptions.Global.DefaultClassLevelCascadeMode = FluentValidation.ValidatorOptions.Global.DefaultRuleLevelCascadeMode = FluentValidation.CascadeMode.Stop;
   #endregion
-
 
   #region Templated MVC Svcs
 
@@ -55,6 +72,7 @@ try {
 
   #endregion
 
+  #region SignalR and Swagger
 
   //builder.Services.AddHostedService<SchedulerService>();
 
@@ -72,8 +90,14 @@ try {
   //o.SupportedProtocols
   //o.MaximumParallelInvocationsPerClient
 
-  DiConfiguration.ConfigureServices(builder.Services, settings);
+  #endregion SignalR and Swagger
 
+  #endregion Services
+
+
+  #region Configure & Build App Services
+
+  DiConfiguration.ConfigureServices(builder.Services, settings);
   var app = builder.Build();
 
   // Configure the HTTP request pipeline.
@@ -83,6 +107,7 @@ try {
     app.UseHsts();
   }
 
+  #endregion
 
   #region Templated MVC
 
@@ -95,12 +120,16 @@ try {
 
   #endregion
 
+  #region SignalR
+
 #pragma warning disable ASP0014 // Suggest using top level route registrations
   app.UseEndpoints(endpoints => {
     endpoints.MapHub<MineNetHub>("/ws");
   });
 #pragma warning restore ASP0014 // Suggest using top level route registrations
 
+
+  #endregion SignalR
 
   #region Templated MVC
 
@@ -113,6 +142,7 @@ try {
 
   #endregion
 
+  #region Catch and Finally
 
 } catch (Exception ex) {
   Log.Fatal(ex, "Unhandled Exception");
@@ -120,3 +150,5 @@ try {
   Log.Information("Shut down complete");
   Log.CloseAndFlush();
 }
+
+#endregion Catch and Finally
