@@ -21,6 +21,11 @@
     </div>
 </section>
 
+<section>
+  <h4>Filter Section</h4>
+  
+</section>
+
 <section class="product_section">
     <table class="table">
         <thead>
@@ -38,7 +43,10 @@
             {
                 <tr>
                     <td>
-                        test
+                        @Html.DisplayFor(modelItem => item.TagId)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.FirstName)
                     </td>
                 </tr>
             }
