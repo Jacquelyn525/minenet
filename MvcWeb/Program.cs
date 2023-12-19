@@ -10,6 +10,7 @@ using Newtonsoft.Json.Serialization;
 using Serilog;
 
 using MvcWeb.WS;
+using SignalRChat.Hubs;
 
 
 
@@ -48,6 +49,17 @@ try {
   builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
   #endregion Entity Framework
+
+  builder.Services.AddCors(options =>
+  {
+    options.AddDefaultPolicy(
+        builder => {
+          builder.WithOrigins("https://example.com")
+              .AllowAnyHeader()
+              .WithMethods("GET", "POST")
+              .AllowCredentials();
+        });
+  });
 
   #region Fluent Validation
   builder.Services.AddFluentValidationAutoValidation()
@@ -125,7 +137,10 @@ try {
 #pragma warning disable ASP0014 // Suggest using top level route registrations
   app.UseEndpoints(endpoints => {
     endpoints.MapHub<MineNetHub>("/ws");
+    endpoints.MapHub<ChatHub>("/chatHub");
   });
+
+  //app.MapHub<ChatHub>("/chatHub");
 #pragma warning restore ASP0014 // Suggest using top level route registrations
 
 
