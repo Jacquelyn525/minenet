@@ -1,15 +1,7 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 
-using Microsoft.AspNetCore.Authorization; //Added for access to [Authorize]
-using Microsoft.AspNetCore.Hosting;
-using System.IO;
-using System.Drawing;//Added for access to Image class
+using Microsoft.AspNetCore.Authorization;
 
 using MvcWeb.Models;
 
@@ -17,6 +9,7 @@ using MvcWeb.Models;
 namespace GadgetStore.UI.MVC.Controllers {
 
   //[Authorize(Roles = "Admin")]
+  [AllowAnonymous]
   public class HistoryController : Controller {
 
     private readonly MineNetDBContext _context;
@@ -28,7 +21,6 @@ namespace GadgetStore.UI.MVC.Controllers {
       _webHostEnvironment = webHostEnvironment;
     }
 
-    // GET: Products
     [AllowAnonymous]
     public async Task<IActionResult> Index() {
       //By default, let's show only those products that are not discontinued
@@ -36,43 +28,6 @@ namespace GadgetStore.UI.MVC.Controllers {
 
       return View(await entries.ToListAsync());
     }
-
-    // GET: Products/Details/5
-    //[AllowAnonymous]
-    //public async Task<IActionResult> Details(int? id, string? prevAction) {
-    //  if (id == null || _context.Products == null) {
-    //    return NotFound();
-    //  }
-
-    //  var product = await _context.Products
-    //      .Include(p => p.Category)
-    //      .Include(p => p.Supplier)
-    //      .FirstOrDefaultAsync(m => m.ProductId == id);
-    //  if (product == null) {
-    //    return NotFound();
-    //  }
-
-    //  if (prevAction == "Index") {
-    //    ViewBag.PrevAction = "Index";
-    //  } else {
-    //    ViewBag.PrevAction = "TiledProducts";
-    //  }
-
-    //  return View(product);
-    //}
-
-    // POST: Products/Create
-    // To protect from overposting attacks, enable the specific properties you want to bind to.
-    // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-    //[HttpPost]
-    //[ValidateAntiForgeryToken]
-    //public async Task<IActionResult> Create([Bind("ProductId,ProductName,ProductPrice,ProductDescription,UnitsInStock,UnitsOnOrder,IsDiscontinued,CategoryId,SupplierId,ProductImage,Image")] Product product) {
-
-    //  ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName", product.CategoryId);
-    //  ViewData["SupplierId"] = new SelectList(_context.Suppliers, "SupplierId", "SupplierName", product.SupplierId);
-    //  return View(product);
-    //}
-
   }
 }
 

@@ -1,28 +1,37 @@
 using System.Diagnostics;
-
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 
 using MvcWeb.Models;
 
-namespace MvcWeb.Controllers {
-  public class HomeController : Controller {
-    private readonly ILogger<HomeController> _logger;
+namespace MvcWeb.Controllers;
 
-    public HomeController(ILogger<HomeController> logger) {
-      _logger = logger;
-    }
+[AllowAnonymous]
+public class HomeController : Controller {
 
-    public IActionResult Index() {
-      return View();
-    }
+  private readonly ILogger<HomeController> _logger;
 
-    public IActionResult Privacy() {
-      return View();
-    }
+  public HomeController(ILogger<HomeController> logger) {
+    _logger = logger;
+  }
 
-    [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
-    public IActionResult Error() {
-      return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
-    }
+  [AllowAnonymous]
+  public IActionResult Index() {
+    return View();
+  }
+
+  [AllowAnonymous]
+  public IActionResult Privacy() {
+    return View();
+  }
+
+  [AllowAnonymous]
+  public IActionResult History() {
+    return View();
+  }
+
+  [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
+  public IActionResult Error() {
+    return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
   }
 }

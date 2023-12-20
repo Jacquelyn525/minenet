@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () => {
   // <snippet_Connection>
   const connection = new signalR.HubConnectionBuilder()
-    .withUrl("/chathub")
+    .withUrl("/chathub", options => {
+      options.UseDefaultCredentials = true;
+    })
     .configureLogging(signalR.LogLevel.Information)
     .build();
   // </snippet_Connection>
@@ -29,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function start() {
     try {
-      await connection.start();
+      await connection.start({ transport: 'longPolling'});
       console.log("SignalR Connected.");
     } catch (err) {
       console.log(err);
