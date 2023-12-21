@@ -1,4 +1,5 @@
-@* @model IEnumerable<GadgetStore.DATA.EF.Models.Product>
+@*
+@model IEnumerable<GadgetStore.DATA.EF.Models.Product>
 
 @{
     ViewData["Title"] = "Shop Gadgets";
@@ -31,19 +32,19 @@
                 <th>
                     @Html.DisplayNameFor(model => model.ProductPrice)
                 </th>
-                @*                <th>
-                @Html.DisplayNameFor(model => model.ProductDescription)
+                <th>
+                    @Html.DisplayNameFor(model => model.ProductDescription)
                 </th>
                 <th>
-                @Html.DisplayNameFor(model => model.UnitsInStock)
+                    @Html.DisplayNameFor(model => model.UnitsInStock)
                 </th>
                 <th>
-                @Html.DisplayNameFor(model => model.UnitsOnOrder)
+                    @Html.DisplayNameFor(model => model.UnitsOnOrder)
                 </th>
                 <th>
-                @Html.DisplayNameFor(model => model.IsDiscontinued)
-                </th>*@
-@* <th>
+                    @Html.DisplayNameFor(model => model.IsDiscontinued)
+                </th>
+                <th>
                     @Html.DisplayNameFor(model => model.ProductImage)
                 </th>
                 <th>
@@ -60,7 +61,7 @@
             {
                 <tr>
                     <td>
-                        @* @Html.DisplayFor(modelItem => item.ProductName)
+                        @Html.DisplayFor(modelItem => item.ProductName)
 
                         <a asp-action="Details" asp-route-id="@item.ProductId" asp-route-prevAction="Index">
                             @Html.DisplayFor(modelItem => item.ProductName)
@@ -70,63 +71,57 @@
                     <td>
                         @Html.DisplayFor(modelItem => item.ProductPrice)
                     </td>
-                                     <td>
-                @Html.DisplayFor(modelItem => item.ProductDescription)
-                </td>
-                <td>
-                @Html.DisplayFor(modelItem => item.UnitsInStock)
-                </td>
-                <td>
-                @Html.DisplayFor(modelItem => item.UnitsOnOrder)
-                </td>
-                <td>
-                @Html.DisplayFor(modelItem => item.IsDiscontinued)
-                </td>
-<td>
-    @Html.DisplayFor(modelItem => item.ProductImage)
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitsInStock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.UnitsOnOrder)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.IsDiscontinued)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ProductImage)
 
-    <a asp-action="Details" asp-route-id="@item.ProductId" asp-route-prevAction="Index">
-        <img src="~/images/t_@item.ProductImage" class="img-fluid" alt="@item.ProductDescription" />
-    </a>
+                        <a asp-action="Details" asp-route-id="@item.ProductId" asp-route-prevAction="Index">
+                            <img src="~/images/t_@item.ProductImage" class="img-fluid" alt="@item.ProductDescription" />
+                        </a>
 
-</td>
-<td>
-    @Html.DisplayFor(modelItem => item.Category.CategoryName)
-</td>
-<td>
-    @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
-</td>
-<td>
-    @if (User.IsInRole("Admin"))
-    {
-        <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> <span>|</span>
-        @*<a asp-action="Details" asp-route-id="@item.ProductId">Details</a> |*@
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.CategoryName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Supplier.SupplierName)
+                    </td>
+                    <td>
+                        @if (User.IsInRole("Admin"))
+                        {
+                            <a asp-action="Edit" asp-route-id="@item.ProductId">Edit</a> <span>|</span>
+                            <a asp-action="Details" asp-route-id="@item.ProductId">Details</a>
+                            |
 
-        @*
-    Conditional Delete Availability
-    - Only allow users to click on the delete button if the product
-    is not directly related to any other records.
-    - We can check the Count of related records for the product. If
-    the count is 0, allow the deletion. Otherwise, disable the link.
-    *@
+                            @if(item.OrderProducts.Count() == 0)
+                            {
+                                <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
+                            }
+                            else
+                            {
+                                <a disabled="true" class="text-danger" style="text-decoration: line-through;"
+                                   title="Can't delete - referenced by other records.">
+                                    Delete
+                                </a>
+                            }
 
-        @* @if (item.OrderProducts.Count() == 0)
-        {
-            <a asp-action="Delete" asp-route-id="@item.ProductId">Delete</a>
-        }
-        else
-        {
-            <a disabled="true" class="text-danger" style="text-decoration: line-through;"
-               title="Can't delete - referenced by other records.">
-                Delete
-            </a>
-        }
+                        }
 
-    }
-
-</td>
+                    </td>
                 </tr>
             }
         </tbody>
     </table>
-</section> *@
+</section>
+ *@
