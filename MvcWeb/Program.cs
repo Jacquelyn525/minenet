@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 using Serilog;
 
-using MvcWeb.WS;
+using MvcWeb.Hubs;
 using SignalRChat.Hubs;
 
 #region Logger

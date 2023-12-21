@@ -25,9 +25,12 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="History" asp-action="Index">History</a>
                         </li>
-                        @* <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li> *@
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Chat">Secret Chat Room</a>
+                        </li>
+                        <li class="nav-item">
+                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        </li>
                     </ul>
                     <p class="nav navbar-text">Hello, @User.Identity?.Name!</p>
                 </div>
@@ -67,7 +70,7 @@
         // todo:  extract to libs file
         $(document).ready(function () {
             var connection = new signalR.HubConnectionBuilder()
-                .withUrl("/ws/alerts") // Replace with your actual hub path
+                .withUrl("/ws")
                 .configureLogging(signalR.LogLevel.Information)
                 .build();
 
@@ -118,16 +121,16 @@
             updateGrid();
 
             // Hub method to receive updates from the server
-            connection.on("UpdateGrid", function (updatedData) {
+            connection.on("AlertNotification", function (updatedData) {
                 data = updatedData;
                 updateGrid();
             });
         });
     </script>
     <style>
-      /*
-        todo:  extract to libs/css file
-      */
+        /*
+                todo:  extract to libs/css file
+              */
         #sortable-grid {
             width: 300px;
         }
