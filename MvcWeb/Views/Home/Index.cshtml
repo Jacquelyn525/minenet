@@ -10,9 +10,10 @@
             <div class="grid-column">Column 2</div>
             <div class="grid-column">Column 3</div>
         </div>
-        <div id="grid-body"></div>
+        <div id="tags-grid-body"></div>
     </div>
 </div>
+
 <!--
 
   <div class="form-group row">
@@ -38,25 +39,87 @@
 -->
 @section Scripts
 {
-    <script src="~/lib/signalr/signalr.js"></script>
     @* <script src="~/chat.js"></script> *@
+    <script>
+        // todo:  extract to libs file
+        $(document).ready(function () {
+            var connection = new signalR.HubConnectionBuilder()
+                .withUrl("/ws/tags") // Replace with your actual hub path
+                .configureLogging(signalR.LogLevel.Information)
+                .build();
 
-    <style>
-        #sortable-grid {
-            width: 300px;
-        }
+            connection.start().then(function () {
+                console.log("Connected to hub");
+            }).catch(function (err) {
+                console.error(err.toString());
+            });
 
-        .grid-header {
-            background-color: #eee;
-            display: flex;
-            cursor: grab;
-        }
+            // Dummy data (replace with your actual data)
+            var data = [
+                { Column1: "Data 1", Column2: "Data 2", Column3: "Data 3" },
+                { Column1: "Data 4", Column2: "Data 5", Column3: "Data 6" },
+                // Add more data as needed
+            ];
 
-        .grid-column {
-            flex: 1;
-            padding: 8px;
-            border: 1px solid #ddd;
-        }
-    </style>
+            // Function to update grid content
+            function updateGrid() {
+                var gridBody = $("#tags-grid-body");
+                gridBody.empty(); // Clear existing content
+
+                // Iterate through data and append rows
+                data.forEach(function (item) {
+                    var row = $("<div class='grid-row'>");
+                    row.append("<div class='grid-column'>" + item.Column1 + "</div>");
+                    row.append("<div class='grid-column'>" + item.Column2 + "</div>");
+                    row.append("<div class='grid-column'>" + item.Column3 + "</div>");
+                    gridBody.append(row);
+                });
+
+                // Make the grid sortable
+                $("#sortable-grid").sortable({
+                    items: ".grid-row",
+                    cursor: "grabbing",
+                    update: function (event, ui) {
+                        // Handle sorting updates
+                        var sortedIds = $("#sortable-grid .grid-row").map(function () {
+                            return $(this).index();
+                        }).get();
+
+                        // Send sortedIds to the hub or perform any required action
+                        connection.invoke("UpdateSortOrder", sortedIds);
+                    }
+                }).disableSelection();
+            }
+
+            // Call the updateGrid function initially and after any hub updates
+            updateGrid();
+
+            // Hub method to receive updates from the server
+            connection.on("UpdateGrid", function (updatedData) {
+                data = updatedData;
+                updateGrid();
+            });
+        });
+    </script>
+    @*
+        currently exists in the _Layout view
+        <style>
+            #sortable-grid {
+                width: 300px;
+            }
+
+            .grid-header {
+                background-color: #eee;
+                display: flex;
+                cursor: grab;
+            }
+
+            .grid-column {
+                flex: 1;
+                padding: 8px;
+                border: 1px solid #ddd;
+            }
+        </style>
+    *@
 }
 
