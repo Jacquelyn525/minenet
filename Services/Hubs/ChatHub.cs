@@ -1,5 +1,5 @@
 using Microsoft.AspNetCore.SignalR;
-namespace SignalRChat.Hubs;
+namespace MvcWeb.Hubs;
 
 public class ChatHub : Hub {
   public async Task SendMessage(string user, string message) {

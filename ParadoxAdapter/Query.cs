@@ -1,6 +1,8 @@
 using System.Reflection.Metadata.Ecma335;
 using System.Text;
 
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
+
 namespace MvcWeb.ParadoxAdapter;
 
 public static class Query {
@@ -20,27 +22,40 @@ public static class Query {
     }
   }
 
-  public static string GetEquipment() {
-    var select = "Select [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]";
-    var from = "From [Equipment]";
-    var orderby = "Order By[Last Name], [First Name], [Tag ID], [Signal Strength] DESC";
+  public static string GetEquipment {
+    get {
 
-    throw new NotImplementedException();
+      var query = new StringBuilder();
+
+      var select = "Select [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]";
+      var from = "From [Equipment]";
+      var orderby = "Order By[Last Name], [First Name], [Tag ID], [Signal Strength] DESC";
+
+      return query.ToString();
+    }
   }
 
-  public static string GetSupplyCars() {
-    var select = "Select [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]";
-    var from = "From [Equipment]";
-    var where = "WHERE ([Last Name] Like '%EQUIPMENT%') OR ([Last Name] Like '%EQUIPMENT%' AND [First Name] Like '(%)%')";
-    var orderby = "Order By [First Name]";
-    throw new NotImplementedException();
+  public static string GetSupplyCars {
+    get {
+
+      var query = new StringBuilder();
+      var select = "Select [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]";
+      var from = "From [Equipment]";
+      var where = "WHERE ([Last Name] Like '%EQUIPMENT%') OR ([Last Name] Like '%EQUIPMENT%' AND [First Name] Like '(%)%')";
+      var orderby = "Order By [First Name]";
+
+      return query.ToString();
+    }
   }
 
-  public static string GetTags() {
-    var query = "Select * from [TagReader]";
+  public static string GetTags {
+    get {
 
-    throw new NotImplementedException();
+      var query = new StringBuilder();
+      var select = "Select * from [TagReader]";
+
+      return query.ToString();
+    }
   }
-
 
 }

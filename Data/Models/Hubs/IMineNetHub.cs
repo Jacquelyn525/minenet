@@ -22,6 +22,8 @@ public class Alert : IAlert {
 
 public interface ILocationUpdate {
 
+  string TimeStamp { get; }
+
   string Message { get; }
 
   List<MinerEntry> Locations { get; set; }
@@ -30,11 +32,11 @@ public interface ILocationUpdate {
 
 public class LocationUpdate : ILocationUpdate {
 
+  public string TimeStamp { get => DateTime.Now.ToLongTimeString(); }
 
   public string Message { get; set; } = string.Empty;
 
   public List<MinerEntry> Locations { get; set; } = new List<MinerEntry>();
-
 
 }
 

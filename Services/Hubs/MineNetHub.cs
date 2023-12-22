@@ -7,10 +7,10 @@ using Serilog;
 
 using ILogger = Serilog.ILogger;
 
-namespace MvcWeb.Hubs;
+namespace MvcWeb.Services.Hubs;
 
-[SignalRHub]
-[AllowAnonymous]
+//[SignalRHub]
+//[AllowAnonymous]
 public class MineNetHub : Hub<IMineNetHub> {
 
 
@@ -31,12 +31,17 @@ public class MineNetHub : Hub<IMineNetHub> {
     await Clients.All.AlertNotification(update);
   }
 
-  public async Task LocationNotification(ILocationUpdate update) {
+  public async Task LocationUpdate(ILocationUpdate update) {
     _log.Information("LocationUpdate Notification Sent!");
     await Clients.All.LocationNotification(update);
   }
 
   public async Task TagHistoryEtlUpdate(ITagHistoryEtlUpdate update) {
+    _log.Information("Tag History Etl Update Sent!");
+    await Clients.All.TagHistoryEtlUpdate(update);
+  }
+
+  public async Task Eff(ITagHistoryEtlUpdate update) {
     _log.Information("Tag History Etl Update Sent!");
     await Clients.All.TagHistoryEtlUpdate(update);
   }

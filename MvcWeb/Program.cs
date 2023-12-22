@@ -5,7 +5,8 @@ using Serilog;
 
 using MvcWeb.Hubs;
 using MvcWeb.Services;
-using SignalRChat.Hubs;
+using MvcWeb.Services.Hubs;
+//using SignalRChat.Hubs;
 
 #region Logger
 
@@ -47,8 +48,8 @@ try {
   builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
   builder.Services.AddRazorPages();
 
-  builder.Services.AddHostedService<NotificationsService>();
-  builder.Services.AddHostedService<EtlService>();
+  builder.Services.AddHostedService<NotificationService>();
+  //builder.Services.AddHostedService<EtlService>();
 
 #if DEBUG
   builder.Services.AddSignalR(o => o.EnableDetailedErrors = true);

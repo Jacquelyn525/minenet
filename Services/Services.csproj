@@ -5,7 +5,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <AssemblyName>MvcWeb.Services</AssemblyName>
-    <RootNamespace>MvcWeb</RootNamespace>
+    <RootNamespace>MvcWeb.Services</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
