@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 using MvcWeb.Hubs;
+using MvcWeb.Services;
 using SignalRChat.Hubs;
 
 #region Logger
@@ -46,7 +47,8 @@ try {
   builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
   builder.Services.AddRazorPages();
 
-  //builder.Services.AddHostedService<SchedulerService>();
+  builder.Services.AddHostedService<NotificationsService>();
+  builder.Services.AddHostedService<EtlService>();
 
 #if DEBUG
   builder.Services.AddSignalR(o => o.EnableDetailedErrors = true);

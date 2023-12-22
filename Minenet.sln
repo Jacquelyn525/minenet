@@ -23,7 +23,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utilities", "Utilities", "{
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "ParadoxAdapter", "ParadoxAdapter\ParadoxAdapter.csproj", "{F8AF2872-E81D-4348-9BBF-C9ED690AB1F6}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Services", "Services\Services.csproj", "{9FE7658A-0DBE-4861-8A4B-28423E2A665F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Services", "Services\Services.csproj", "{9FE7658A-0DBE-4861-8A4B-28423E2A665F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
