@@ -31,6 +31,9 @@ body {
   display: flex;
   cursor: grab;
 }
+.grid-row {
+  display: flex;
+}
 
 .grid-column {
   flex: 1;

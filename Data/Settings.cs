@@ -1,11 +1,9 @@
-using System.Runtime.Versioning;
 using Microsoft.Extensions.Configuration;
 
 using MvcWeb.Models.Configuration;
 
 namespace MvcWeb {
-
-  [SupportedOSPlatform("windows")]
+  
   public class Settings {
 
     public Dictionary<string, string> ConnectionStrings { get; private set; } = new Dictionary<string, string>();

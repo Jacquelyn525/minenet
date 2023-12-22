@@ -1,12 +1,9 @@
 using System.Data.OleDb;
-using System.Reflection;
-using System.Runtime.Versioning;
 
 using MvcWeb.Models.Configuration;
 
 namespace MvcWeb {
-
-  [SupportedOSPlatform("windows")]
+  
   [TransientService]
   public class ParadoxDbAdapter {
     private readonly Settings _settings;

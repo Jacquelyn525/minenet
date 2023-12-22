@@ -5,11 +5,14 @@ $(document).ready(function () {
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
-  connection.start().then(function () {
-    console.log("Connected to hub");
-  }).catch(function (err) {
-    console.error(err.toString());
-  });
+  connection
+    .start()
+    .then(function () {
+      console.log("Connected to hub");
+    })
+    .catch(function (err) {
+      console.error(err.toString());
+    });
 
   // Dummy data (replace with your actual data)
   var data = [
@@ -31,7 +34,7 @@ $(document).ready(function () {
     //  row.append("<div class='grid-column'>" + item.Column3 + "</div>");
     //  gridBody.append(row);
     //});
-    
+
     var row = $("<div class='grid-row'>");
 
     row.append("<div class='grid-column'>" + data.timeStamp + "</div>");
@@ -41,7 +44,6 @@ $(document).ready(function () {
 
     gridBody.append(row);
 
-    
     //gridBody.append("<div class='grid-row'><div class='grid-column'>" + data.timeStamp
     //  + "</div><div class='grid-column'>" + data.message +
     //"</div ><div /></div> ");
@@ -73,7 +75,7 @@ $(document).ready(function () {
   });
 
   // Hub method to receive updates from the server
-  connection.on('LocationNotification', function (updatedData) {
+  connection.on("LocationNotification", function (updatedData) {
     data = updatedData;
     console.log(data);
     updateGrid();
@@ -86,13 +88,10 @@ $(document).ready(function () {
     updateGrid();
   });
 
-
-
   // Hub method to receive updates from the server
-  connection.on('LocationUpdate', function (updatedData) {
+  connection.on("LocationUpdate", function (updatedData) {
     data = updatedData;
     console.log(data);
     updateGrid();
   });
-
 });

@@ -12,7 +12,7 @@ namespace MvcWeb.Models.Configuration {
     int MinerInterval { get; }
   }
 
-  [SupportedOSPlatform("windows")]
+  
   public class MineNetConfiguration : IMineNetConfiguration {
     public string MineNetPath { get; set; } = string.Empty;
     public string DataPath { get; set; } = "Data";
@@ -26,7 +26,7 @@ namespace MvcWeb.Models.Configuration {
 
   #region QoL / Utility Extensions
 
-  [SupportedOSPlatform("windows")]
+  
   public static class MineNetConfigurationExtensions {
     public static OleDbConnectionStringBuilder DbConnStr(this MineNetConfiguration cfg) {
       return new OleDbConnectionStringBuilder {

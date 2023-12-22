@@ -61,17 +61,19 @@ public class NotificationService : IHostedService, IDisposable {
   public void Dispose() => _timer?.Dispose();
 
   private async void DoWork(object? state) {
-    var workerMsg = $"Location Update Successful: {DateTime.Now.ToShortTimeString()}";
+    //var workerMsg = $"Location Update Successful: {DateTime.Now.ToShortTimeString()}";
 
     //var locations = await _getLocation.Execute();
     //var alerts = await _getAlerts.Execute();
 
     //await sendHubUpdate(workerMsg, locations);
     //await sendHubUpdate(workerMsg, alerts);
-    await sendHubUpdate(workerMsg, new List<MinerEntry>());
+    //await sendHubUpdate(workerMsg, new List<MinerEntry>());
+    await processTags();
+    await processAlerts();
   }
 
-  private void processTags() {
+  private async Task processTags() {
     var workerMsg = $"Location Update Successful: {DateTime.Now.ToShortTimeString()}";
 
     //var locations = await _getLocation.Execute();
@@ -79,7 +81,7 @@ public class NotificationService : IHostedService, IDisposable {
     //await sendHubUpdate(workerMsg, locations);
   }
 
-  private void processAlerts() {
+  private async Task processAlerts() {
     //var workerMsg = $"Alerts Update Successful: {DateTime.Now.ToShortTimeString()}";
 
     //var locations = await _getLocation.Execute();
