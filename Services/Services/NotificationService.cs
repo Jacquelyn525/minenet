@@ -3,7 +3,7 @@ using Microsoft.Extensions.Hosting;
 
 using MvcWeb.Models.Hubs;
 using MvcWeb.Models.MineNet;
-using MvcWeb.ParadoxAdapter;
+using MvcWeb.Paradox;
 using MvcWeb.Services.Hubs;
 
 using Serilog;
@@ -12,19 +12,26 @@ namespace MvcWeb.Services;
 
 public class NotificationService : IHostedService, IDisposable {
 
+  #region setup
+
   private readonly ILogger _log = Log.Logger;
   private Timer? _timer = null;
+
   private readonly Settings _settings;
   private readonly IHubContext<MineNetHub, IMineNetHub> _hubContext;
-  private readonly int MinerInterval = 30;
-  //private readonly GetLocation _getLocation;
+  DbAdapter _dbAdapter = null;
 
-  public NotificationService(Settings settings, IHubContext<MineNetHub, IMineNetHub> hubContext) {
+  private readonly int MinerInterval = 30;
+
+  public NotificationService(Settings settings, IHubContext<MineNetHub, IMineNetHub> hubContext, DbAdapter dbAdapter) {
+    //public NotificationService(Settings settings, IHubContext<MineNetHub, IMineNetHub> hubContext) {
     _settings = settings;
     _hubContext = hubContext;
     MinerInterval = _settings.MineNetConfig.MinerInterval;
-    //_getLocation = getLocation;
+    _dbAdapter = dbAdapter;
   }
+
+  #region Timer
 
   public async Task StartAsync(CancellationToken cancellationToken) {
     await Task.Run(() => {
@@ -61,43 +68,52 @@ public class NotificationService : IHostedService, IDisposable {
   public void Dispose() => _timer?.Dispose();
 
   private async void DoWork(object? state) {
-    //var workerMsg = $"Location Update Successful: {DateTime.Now.ToShortTimeString()}";
-
-    //var locations = await _getLocation.Execute();
-    //var alerts = await _getAlerts.Execute();
-
-    //await sendHubUpdate(workerMsg, locations);
-    //await sendHubUpdate(workerMsg, alerts);
-    //await sendHubUpdate(workerMsg, new List<MinerEntry>());
-    await processTags();
-    await processAlerts();
+    await LocationsReader();
+    await AlertsReader();
   }
 
-  private async Task processTags() {
-    var workerMsg = $"Location Update Successful: {DateTime.Now.ToShortTimeString()}";
+  #endregion
 
-    //var locations = await _getLocation.Execute();
+  #endregion
 
-    //await sendHubUpdate(workerMsg, locations);
+  #region Locations
+
+  private async Task LocationsReader() {
+    //var miners = await _dbAdapter.GetLocations();
+    var miners = new List<IMinerEntry>();
+    await sendHubUpdate(nameof(LocationsReader), miners);
   }
 
-  private async Task processAlerts() {
-    //var workerMsg = $"Alerts Update Successful: {DateTime.Now.ToShortTimeString()}";
-
-    //var locations = await _getLocation.Execute();
-
-    //await sendHubUpdate(workerMsg, locations);
-  }
-
-  private async Task sendHubUpdate(string message, List<MinerEntry>? miners = null) {
+  private async Task sendHubUpdate(string message, List<IMinerEntry>? miners = null) {
     _log.Information(message);
 
     await _hubContext.Clients.All.LocationNotification(
       new LocationUpdate {
         Message = message,
-        Locations = miners != null ? miners : new List<MinerEntry>(),
+        Locations = miners != null ? miners : new List<IMinerEntry>(),
       }
     );
   }
+
+  #endregion
+
+  #region Alerts
+
+  private async Task AlertsReader() {
+    await sendHubUpdate(nameof(LocationsReader), new List<IAlertEntry>());
+  }
+
+  private async Task sendHubUpdate(string message, List<IAlertEntry>? alerts = null) {
+    _log.Information(message);
+
+    IAlert alert = new Alert {
+      Message = message,
+      Alerts = alerts != null ? alerts : new List<IAlertEntry>(),
+    };
+
+    await _hubContext.Clients.All.AlertNotification(alert);
+  }
+
+  #endregion
 
 }

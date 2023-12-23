@@ -1,4 +1,3 @@
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 using MvcWeb.Models.Hubs;
@@ -9,8 +8,6 @@ using ILogger = Serilog.ILogger;
 
 namespace MvcWeb.Services.Hubs;
 
-//[SignalRHub]
-//[AllowAnonymous]
 public class MineNetHub : Hub<IMineNetHub> {
 
 
