@@ -19,7 +19,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\MvcWeb.Models\MvcWeb.Models.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

@@ -16,8 +16,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Data\Core.csproj" />
-    <ProjectReference Include="..\MvcWeb.Paradox\MvcWeb.Paradox.csproj" />
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

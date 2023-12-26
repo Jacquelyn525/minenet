@@ -14,16 +14,15 @@ namespace MvcWeb.Paradox;
 public class DbAdapter {
   //private readonly ILogger _log = Log.Logger;
 
-  //private readonly Settings _settings;
+  private readonly Settings _settings;
 
 
   // future maintainer:  I apologize for the following queries
   // this application and codebase was a rewrite of an earlier, which is where these queries come from, as-is.
 
-  public DbAdapter() { }
-  //public DbAdapter(Settings settings) {
-  //  _settings = settings;
-  //}
+  public DbAdapter(Settings settings) {
+    _settings = settings;
+  }
 
   //private async Task<List<T>> ExecuteQuery<T>(string query, string dateFolder = null, string tagDbFile = null
   //  ) => await Task.Run(async () => {

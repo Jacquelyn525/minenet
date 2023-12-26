@@ -15,7 +15,10 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Data\Core.csproj" />
-    <ProjectReference Include="..\MvcWeb.Models\MvcWeb.Models.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Models\" />
   </ItemGroup>
 
 </Project>

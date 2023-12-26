@@ -14,7 +14,7 @@ public class NotificationService : IHostedService, IDisposable {
 
   #region setup
 
-  private readonly ILogger _log = Log.Logger;
+  private readonly Serilog.ILogger _log = Log.Logger;
   private Timer? _timer = null;
 
   private readonly Settings _settings;
