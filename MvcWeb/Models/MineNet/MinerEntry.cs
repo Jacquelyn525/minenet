@@ -1,7 +1,7 @@
 namespace MvcWeb.Models.MineNet {
 
   [ParadoxDbModel]
-  public class MinerEntry {
+  public class MinerEntry : IMinerEntry {
 
     [ParadoxDbColumn("Tag ID")]
     public int TagID { get; set; }

@@ -56,7 +56,7 @@ public class DbAdapter {
       return results;
     });
 
-  public async Task<List<IMinerEntry>> GetLocations() {
+  public async Task<List<MinerEntry>> GetLocations() {
 
     var query = new StringBuilder();
 
@@ -65,14 +65,14 @@ public class DbAdapter {
     query.AppendLine(" Where Not Exists (Select * from [ExitZone] as t3 Where t1.[Address] = t3.[Address] And t1.[ZoneNumber] = t3.[ZoneNumber])) as t4");
     query.AppendLine(" On (t4.[Tag ID] = t2.[Tag ID]) And (t4.[Reported] = t2.[Latest]) Order By t4.[Last Name], t4.[First Name], t4.[Tag ID], t4.[Signal Strength] DESC");
 
-    return await ExecuteQuery<IMinerEntry>(query.ToString());
+    return await ExecuteQuery<MinerEntry>(query.ToString());
   }
 
   #region Not Yet Implemented
 
-  public async Task<List<IMinerEntry>> GetEquipment() => await Task.Run(() => new List<IMinerEntry>());
-  public async Task<List<IMinerEntry>> GetSupplyCars() => await Task.Run(() => new List<IMinerEntry>());
-  public async Task<List<IMinerEntry>> GetTags() => await Task.Run(() => new List<IMinerEntry>());
+  public async Task<List<MinerEntry>> GetEquipment() => await Task.Run(() => new List<MinerEntry>());
+  public async Task<List<MinerEntry>> GetSupplyCars() => await Task.Run(() => new List<MinerEntry>());
+  public async Task<List<MinerEntry>> GetTags() => await Task.Run(() => new List<MinerEntry>());
 
   #endregion
 }

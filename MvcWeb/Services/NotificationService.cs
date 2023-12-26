@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.SignalR;
-using Microsoft.Extensions.Hosting;
 
 using MvcWeb.Models.Hubs;
 using MvcWeb.Models.MineNet;
@@ -79,9 +78,8 @@ public class NotificationService : IHostedService, IDisposable {
   #region Locations
 
   private async Task LocationsReader() {
-    //var miners = await _dbAdapter.GetLocations();
-    var miners = new List<IMinerEntry>();
-    await sendHubUpdate(nameof(LocationsReader), miners);
+    var miners = await _dbAdapter.GetLocations();
+    await sendHubUpdate(nameof(LocationsReader), miners.ToList<IMinerEntry>());
   }
 
   private async Task sendHubUpdate(string message, List<IMinerEntry>? miners = null) {
