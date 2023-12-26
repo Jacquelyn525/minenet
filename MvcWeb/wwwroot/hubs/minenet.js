@@ -14,84 +14,84 @@ $(document).ready(function () {
       console.error(err.toString());
     });
 
-  // Dummy data (replace with your actual data)
-  var data = [
-    { Column1: "Data 1", Column2: "Data 2", Column3: "Data 3" },
-    { Column1: "Data 4", Column2: "Data 5", Column3: "Data 6" },
-    // Add more data as needed
-  ];
+  function dataCol(colValue) {
+    var col = $("<div class='grid-column'>");
+    col.append(colValue);
+    col.append("</div>");
+
+    return col;
+  }
 
   // Function to update grid content
-  function updateGrid() {
+  function updateGrid(tagsData) {
     var gridBody = $("#tags-grid-body");
     gridBody.empty(); // Clear existing content
 
     // Iterate through data and append rows
-    //data.forEach(function (item) {
-    //  var row = $("<div class='grid-row'>");
-    //  row.append("<div class='grid-column'>" + item.Column1 + "</div>");
-    //  row.append("<div class='grid-column'>" + item.Column2 + "</div>");
-    //  row.append("<div class='grid-column'>" + item.Column3 + "</div>");
-    //  gridBody.append(row);
-    //});
+    tagsData.locations.forEach((entry) => {
+      console.log(entry);
+      var row = $("<div class='grid-row'>");
 
-    var row = $("<div class='grid-row'>");
+      row.append(dataCol(entry.tagID));
+      row.append(dataCol(entry.minerID));
+      row.append(dataCol(entry.lastName));
+      row.append(dataCol(entry.firstName));
+      row.append(dataCol(entry.address));
+      row.append(dataCol(entry.zoneNumber));
+      row.append(dataCol(entry.zone));
+      row.append(dataCol(entry.reported));
+      row.append(dataCol(entry.signalStrength));
+      row.append("</div>");
 
-    row.append("<div class='grid-column'>" + data.timeStamp + "</div>");
-    row.append("<div class='grid-column'>" + data.message + "</div>");
-    row.append("<div class='grid-column'>" + JSON.stringify(data.locations) + "</div>");
-    row.append("</div>");
-
-    gridBody.append(row);
-
-    //gridBody.append("<div class='grid-row'><div class='grid-column'>" + data.timeStamp
-    //  + "</div><div class='grid-column'>" + data.message +
-    //"</div ><div /></div> ");
-
+      gridBody.append(row);
+    });
+    
     // Make the grid sortable
-    //$("#sortable-grid").sortable({
-    //  items: ".grid-row",
-    //  cursor: "grabbing",
-    //  update: function (event, ui) {
-    //    // Handle sorting updates
-    //    var sortedIds = $("#sortable-grid .grid-row").map(function () {
-    //      return $(this).index();
-    //    }).get();
+    $("#sortable-grid").sortable({
+      items: ".grid-row",
+      cursor: "grabbing",
+      update: function (event, ui) {
+        // Handle sorting updates
+        var sortedIds = $("#sortable-grid .grid-row").map(function () {
+          return $(this).index();
+        }).get();
 
-    //    // Send sortedIds to the hub or perform any required action
-    //    connection.invoke("UpdateSortOrder", sortedIds);
-    //  }
-    //}).disableSelection();
+        // Send sortedIds to the hub or perform any required action
+        connection.invoke("UpdateSortOrder", sortedIds);
+      }
+    }).disableSelection();
   }
 
   // Call the updateGrid function initially and after any hub updates
-  updateGrid();
-
-  // Hub method to receive updates from the server
-  connection.on("AlertNotification", function (updatedData) {
-    data = updatedData;
-    console.log(data);
-    updateGrid();
-  });
+  //updateGrid();
 
   // Hub method to receive updates from the server
   connection.on("LocationNotification", function (updatedData) {
-    data = updatedData;
-    console.log(data);
-    updateGrid();
+    //console.log(updatedData);
+    if (updatedData && updatedData.locations) {
+      updateGrid(updatedData);
+    }
+  });
+
+
+  // Hub method to receive updates from the server
+  connection.on("AlertNotification", function (updatedData) {
+    //data = updatedData;
+    //console.log(data);
+    //updateGrid(data);
   });
 
   // Hub method to receive updates from the server
-  connection.on("TagHistoryEtlUpdate", function (updatedData) {
-    data = updatedData;
-    console.log(data);
-    updateGrid();
-  });
+  //connection.on("TagHistoryEtlUpdate", function (updatedData) {
+  //  data = updatedData;
+  //  console.log(data);
+  //  updateGrid();
+  //});
 
   // Hub method to receive updates from the server
   connection.on("LocationUpdate", function (updatedData) {
-    data = updatedData;
-    console.log(data);
-    updateGrid();
+    if (updatedData && updatedData.locations) {
+      updateGrid(updatedData);
+    }
   });
 });

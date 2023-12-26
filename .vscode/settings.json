@@ -18,5 +18,30 @@
     "titleBar.inactiveBackground": "#80008099",
     "titleBar.inactiveForeground": "#e7e7e799"
   },
-  "peacock.color": "purple"
+  "peacock.color": "purple",
+  "files.exclude": {
+    "**/.github": true,
+    "**/.vs": true,
+    "**/MineNet.DB": true,
+    "**/MvcWeb/bin": true,
+    "**/MvcWeb/Controllers": true,
+    "**/MvcWeb/Core": true,
+    "**/MvcWeb/Hubs": true,
+    "**/MvcWeb/Models": true,
+    "**/MvcWeb/obj": true,
+    "**/MvcWeb/Paradox": true,
+    "**/MvcWeb/Properties": true,
+    "**/MvcWeb/Services": true,
+    "**/MvcWeb/Utils": true,
+    "**/MvcWeb/appsettings.Development.json": true,
+    "**/MvcWeb/appsettings.json": true,
+    "**/MvcWeb/efpt.config.json": true,
+    "**/MvcWeb/MvcWeb.csproj": true,
+    "**/MvcWeb/MvcWeb.csproj.user": true,
+    "**/MvcWeb/Program.cs": true,
+    "**/MvcWeb/Settings.cs": true,
+    "**/.editorconfig": true,
+    "**/.gitignore": true,
+    "**/Minenet.sln": true
+  }
 }
