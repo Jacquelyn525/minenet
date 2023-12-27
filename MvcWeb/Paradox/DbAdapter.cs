@@ -1,4 +1,5 @@
 using System.Data.OleDb;
+using System.Net;
 using System.Runtime.Versioning;
 using System.Text;
 
@@ -66,6 +67,15 @@ public class DbAdapter {
     query.AppendLine(" On (t4.[Tag ID] = t2.[Tag ID]) And (t4.[Reported] = t2.[Latest]) Order By t4.[Last Name], t4.[First Name], t4.[Tag ID], t4.[Signal Strength] DESC");
 
     return await ExecuteQuery<MinerEntry>(query.ToString());
+  }
+  public async Task<List<AlertEntry>> GetAlerts() {
+
+    var query = new StringBuilder();
+
+    query.Append("Select [Address], [Device], [Type], [Alarm], [Occured], [Location], [Acknowledged], [Note]");
+    query.AppendLine("FROM [Alarm]");
+
+    return await ExecuteQuery<AlertEntry>(query.ToString());
   }
 
   #region Not Yet Implemented

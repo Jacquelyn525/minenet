@@ -98,7 +98,8 @@ public class NotificationService : IHostedService, IDisposable {
   #region Alerts
 
   private async Task AlertsReader() {
-    await sendHubUpdate(nameof(LocationsReader), new List<IAlertEntry>());
+    var alerts = await _dbAdapter.GetAlerts();
+    await sendHubUpdate(nameof(LocationsReader), alerts.ToList<IAlertEntry>());
   }
 
   private async Task sendHubUpdate(string message, List<IAlertEntry>? alerts = null) {

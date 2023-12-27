@@ -22,14 +22,12 @@ $(document).ready(function () {
     return col;
   }
 
-  // Function to update grid content
-  function updateGrid(tagsData) {
+  function updateLocationsGrid(tagsData) {
     var gridBody = $("#tags-grid-body");
-    gridBody.empty(); // Clear existing content
 
-    // Iterate through data and append rows
+    gridBody.empty();
+
     tagsData.locations.forEach((entry) => {
-      console.log(entry);
       var row = $("<div class='grid-row'>");
 
       row.append(dataCol(entry.tagID));
@@ -45,53 +43,98 @@ $(document).ready(function () {
 
       gridBody.append(row);
     });
-    
-    // Make the grid sortable
-    $("#sortable-grid").sortable({
-      items: ".grid-row",
-      cursor: "grabbing",
-      update: function (event, ui) {
-        // Handle sorting updates
-        var sortedIds = $("#sortable-grid .grid-row").map(function () {
-          return $(this).index();
-        }).get();
 
-        // Send sortedIds to the hub or perform any required action
-        connection.invoke("UpdateSortOrder", sortedIds);
-      }
-    }).disableSelection();
+    // Make the grid sortable
+    $("#sortable-grid")
+      .sortable({
+        items: ".grid-row",
+        cursor: "grabbing",
+        update: function (event, ui) {
+          // Handle sorting updates
+          var sortedIds = $("#sortable-grid .grid-row")
+            .map(function () {
+              return $(this).index();
+            })
+            .get();
+
+          // Send sortedIds to the hub or perform any required action
+          connection.invoke("UpdateSortOrder", sortedIds);
+        },
+      })
+      .disableSelection();
   }
 
-  // Call the updateGrid function initially and after any hub updates
-  //updateGrid();
+  function updateAlertsGrid(alertsData){
+    
+    console.log(alertsData);
+
+    var gridBody = $("#alerts-grid-body");
+
+    gridBody.empty();
+
+    alertsData.alerts.forEach((entry) => {
+      var row = $("<div class='grid-row'>");
+
+     row.append(dataCol(entry.address));
+     row.append(dataCol(entry.device));
+     row.append(dataCol(entry.type));
+     row.append(dataCol(entry.alarm));
+     row.append(dataCol(entry.occured));
+     row.append(dataCol(entry.location));
+     row.append(dataCol(entry.acknowledged));
+     row.append(dataCol(entry.note));
+
+      row.append("</div>");
+
+      gridBody.append(row);
+    });
+
+    // Make the grid sortable
+    // $("#sortable-grid")
+    //   .sortable({
+    //     items: ".grid-row",
+    //     cursor: "grabbing",
+    //     update: function (event, ui) {
+    //       // Handle sorting updates
+    //       var sortedIds = $("#sortable-grid .grid-row")
+    //         .map(function () {
+    //           return $(this).index();
+    //         })
+    //         .get();
+
+    //       // Send sortedIds to the hub or perform any required action
+    //       connection.invoke("UpdateSortOrder", sortedIds);
+    //     },
+    //   })
+    //   .disableSelection();
+  }
+
+  // Call the updateLocationsGrid function initially and after any hub updates
+  //updateLocationsGrid();
 
   // Hub method to receive updates from the server
   connection.on("LocationNotification", function (updatedData) {
-    //console.log(updatedData);
     if (updatedData && updatedData.locations) {
-      updateGrid(updatedData);
+      updateLocationsGrid(updatedData);
     }
   });
 
-
   // Hub method to receive updates from the server
-  connection.on("AlertNotification", function (updatedData) {
-    //data = updatedData;
-    //console.log(data);
-    //updateGrid(data);
+  connection.on("AlertNotification", function (alertsData) {
+    updateAlertsGrid(alertsData);
   });
 
   // Hub method to receive updates from the server
   //connection.on("TagHistoryEtlUpdate", function (updatedData) {
   //  data = updatedData;
   //  console.log(data);
-  //  updateGrid();
+  //  updateLocationsGrid();
   //});
 
   // Hub method to receive updates from the server
   connection.on("LocationUpdate", function (updatedData) {
     if (updatedData && updatedData.locations) {
-      updateGrid(updatedData);
+      updateLocationsGrid(updatedData);
     }
   });
 });

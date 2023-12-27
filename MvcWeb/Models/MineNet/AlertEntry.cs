@@ -1,7 +1,7 @@
 namespace MvcWeb.Models.MineNet {
 
   [ParadoxDbModel]
-  public class AlertEntry {
+  public class AlertEntry : IAlertEntry {
 
     [ParadoxDbColumn("Address")]
     public int Address { get; set; }
