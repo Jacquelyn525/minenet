@@ -46,7 +46,7 @@ public class NotificationService : IHostedService, IDisposable {
           _log.Error(ex.Message, ex);
         }
       } else {
-        _log.Information($"Location Notification Service disabled in configuration: (MinerInterval: -1)");
+        _log.Information($"Location Notification Service disabled in configuration: (EtlInterval: -1)");
       }
     });
   }

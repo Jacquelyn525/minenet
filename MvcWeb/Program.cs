@@ -49,7 +49,7 @@ try {
   builder.Services.AddRazorPages();
 
   builder.Services.AddHostedService<NotificationService>();
-  //builder.Services.AddHostedService<EtlService>();
+  builder.Services.AddHostedService<EtlService>();
 
 #if DEBUG
   builder.Services.AddSignalR(o => o.EnableDetailedErrors = true);
