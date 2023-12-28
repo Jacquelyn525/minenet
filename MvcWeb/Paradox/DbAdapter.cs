@@ -13,6 +13,9 @@ namespace MvcWeb.Paradox;
 [SupportedOSPlatform("windows")]
 [TransientService]
 public class DbAdapter {
+
+  #region Setup
+
   private readonly Serilog.ILogger _log = Log.Logger;
 
   private readonly Settings _settings;
@@ -56,6 +59,22 @@ public class DbAdapter {
 
       return results;
     });
+
+  #endregion
+
+  public async Task<List<TagIdEntry>> GetExitZones() {
+    var query = new StringBuilder();
+    query.Append("Select [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]");
+    query.Append("From [  ...  ]");
+    query.Append("IN");
+    query.Append("[  ...  ] ");
+    query.Append("Where [Tag ID] = ...");
+    query.Append("UNION ALL");
+    query.Append("ORDER BY [Tag ID], [Reported], [Signal Strength]");
+
+    return await ExecuteQuery<TagIdEntry>(query.ToString());
+
+  }
 
   public async Task<List<MinerEntry>> GetLocations() {
 

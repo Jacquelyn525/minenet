@@ -9,12 +9,18 @@
     <link rel="stylesheet" href="~/MvcWeb.styles.css" asp-append-version="true" />
 </head>
 <body>
+    @* <div> *@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">MvcWeb</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target=".navbar-collapse"
+                        aria-controls="navbarSupportedContent"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
@@ -25,44 +31,46 @@
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="History" asp-action="Index">History</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Chat">Secret Chat Room</a>
-                        </li>
-                        <li class="nav-item">
-                        <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                        @*
+                        * <li class="nav-item">
+                        *    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Chat">Secret Chat Room</a>
+                        * </li>
+                        * <li class="nav-item">
+                        *    <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                        * </li>
+                        *@
                     </ul>
                     <p class="nav navbar-text">Hello, @User.Identity?.Name!</p>
                 </div>
             </div>
         </nav>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="bg-white p-0 m-0 rounded-2" style="height: 85vh; overflow: hidden;">
+        @RenderBody()
+        <div class="container bg-white py-3 rounded-2 align-content-center">
+            <h4>Alerts</h4>
 
-    <div class="container">
-        <h3>Alerts</h3>
-
-        <div id="sortable-grid">
-            <div class="grid-header">
-                <div class="grid-column">Addr</div>
-                <div class="grid-column">Device</div>
-                <div class="grid-column">Type</div>
-                <div class="grid-column">Alarm</div>
-                <div class="grid-column">Occurred</div>
-                <div class="grid-column">Location</div>
-            </div>
-            <div id="alerts-grid-body"></div>
+            <table class="table table-sm table-light tableFixHead">
+                <thead>
+                    <tr>
+                        <th scope="col" />
+                        <th scope="col">Addr</th>
+                        <th scope="col">Device</th>
+                        <th scope="col">Type</th>
+                        <th scope="col">Alarm</th>
+                        <th scope="col">Occurred</th>
+                        <th scope="col">Location</th>
+                    </tr>
+                </thead>
+                <tbody id="alerts-grid-body" />
+            </table>
         </div>
-    </div>
+    </main>
 
-
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2023 - MvcWeb - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+    <footer class="border-top footer text-muted small p-0 m-0">
+        <div class="container container-sm">
+            &copy; 2023 - Consol Energy
+            @* - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a> *@
         </div>
     </footer>
 

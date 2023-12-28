@@ -1,20 +1,26 @@
 @{
     ViewData["Title"] = "Miner Locations";
 }
-<div class="container">
+<div class="container" style="max-height: 55vh; height: 55vh; overflow: hidden;">
     <h3>Miner Locations</h3>
-    
-    <div id="sortable-grid">
-        <div class="grid-header">
-            <div class="grid-column">Tag ID</div>
-            <div class="grid-column">Miner ID</div>
-            <div class="grid-column">Last Name</div>
-            <div class="grid-column">First Name</div>
-            <div class="grid-column">Addr</div>
-            <div class="grid-column">Zone</div>
-            <div class="grid-column">Reported</div>
-            <div class="grid-column">Duration</div>
-        </div>
-        <div id="tags-grid-body" />
-    </div>
+
+    <table class="table tableFixHead">
+        <thead>
+            <tr>
+                <th scope="col" />
+                <th scope="col">Tag ID</th>
+                <th scope="col">Miner ID</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Addr</th>
+                <th scope="col">Zone</th>
+                <th scope="col">Reported</th>
+                <th scope="col">Duration</th>
+            </tr>
+        </thead>
+        <tbody id="tags-grid-body" />
+    </table>
 </div>
+<script>
+
+</script>

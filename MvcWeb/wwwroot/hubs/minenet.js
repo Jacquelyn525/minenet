@@ -15,9 +15,14 @@ $(document).ready(function () {
     });
 
   function dataCol(colValue) {
-    var col = $("<div class='grid-column'>");
+    //var col = $("<div class='grid-column'>");
+    //col.append(colValue);
+    //col.append("</div>");
+
+    var col = $("<td>");
+
     col.append(colValue);
-    col.append("</div>");
+    col.append("</td>");
 
     return col;
   }
@@ -28,9 +33,12 @@ $(document).ready(function () {
     gridBody.empty();
 
     tagsData.locations.forEach((entry) => {
-      var row = $("<div class='grid-row'>");
+      //var row = $("<div class='grid-row'>");
+      var row = $("<tr>");
 
-      row.append(dataCol(entry.tagID));
+      row.append("<th scope='row'>");
+      row.append(entry.tagID);
+      row.append("</th>");
       row.append(dataCol(entry.minerID));
       row.append(dataCol(entry.lastName));
       row.append(dataCol(entry.firstName));
@@ -39,52 +47,55 @@ $(document).ready(function () {
       row.append(dataCol(entry.zone));
       row.append(dataCol(entry.reported));
       row.append(dataCol(entry.signalStrength));
-      row.append("</div>");
+      row.append("</tr>");
+      //row.append("</div>");
 
       gridBody.append(row);
     });
 
     // Make the grid sortable
-    $("#sortable-grid")
-      .sortable({
-        items: ".grid-row",
-        cursor: "grabbing",
-        update: function (event, ui) {
-          // Handle sorting updates
-          var sortedIds = $("#sortable-grid .grid-row")
-            .map(function () {
-              return $(this).index();
-            })
-            .get();
+    //$("#sortable-grid")
+    //  .sortable({
+    //    items: ".grid-row",
+    //    cursor: "grabbing",
+    //    update: function (event, ui) {
+    //      // Handle sorting updates
+    //      var sortedIds = $("#sortable-grid .grid-row")
+    //        .map(function () {
+    //          return $(this).index();
+    //        })
+    //        .get();
 
-          // Send sortedIds to the hub or perform any required action
-          connection.invoke("UpdateSortOrder", sortedIds);
-        },
-      })
-      .disableSelection();
+    //      // Send sortedIds to the hub or perform any required action
+    //      connection.invoke("UpdateSortOrder", sortedIds);
+    //    },
+    //  })
+    //  .disableSelection();
   }
 
-  function updateAlertsGrid(alertsData){
-    
-    console.log(alertsData);
-
+  function updateAlertsGrid(alertsData) {
     var gridBody = $("#alerts-grid-body");
 
     gridBody.empty();
 
     alertsData.alerts.forEach((entry) => {
-      var row = $("<div class='grid-row'>");
+      //var row = $("<div class='grid-row'>");
+      var row = $("<tr>");
 
-     row.append(dataCol(entry.address));
-     row.append(dataCol(entry.device));
-     row.append(dataCol(entry.type));
-     row.append(dataCol(entry.alarm));
-     row.append(dataCol(entry.occured));
-     row.append(dataCol(entry.location));
-     row.append(dataCol(entry.acknowledged));
-     row.append(dataCol(entry.note));
+      row.append("<th scope='row' />");
+      //row.append(entry.address);
+      //row.append("</th>");
 
-      row.append("</div>");
+      row.append(dataCol(entry.address));
+      row.append(dataCol(entry.device));
+      row.append(dataCol(entry.type));
+      row.append(dataCol(entry.alarm));
+      row.append(dataCol(entry.occured));
+      row.append(dataCol(entry.location));
+      //row.append(dataCol(entry.acknowledged));
+      //row.append(dataCol(entry.note));
+      row.append("</tr>");
+      //row.append("</div>");
 
       gridBody.append(row);
     });
