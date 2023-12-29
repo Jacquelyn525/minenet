@@ -2,6 +2,7 @@ using System;
 
 using Microsoft.AspNetCore.Mvc;
 
+using MvcWeb.Models;
 using MvcWeb.Models.MineNet;
 using MvcWeb.Paradox;
 
@@ -14,18 +15,18 @@ public class HistoryController : Controller {
 
   #region Setup
 
-  private readonly MvcWeb.Paradox.DbAdapter _dbAdapter;
+  private readonly ITagHistoryContext _context;
   private readonly IWebHostEnvironment _webHostEnvironment;
 
 
-  public HistoryController(IWebHostEnvironment webHostEnvironment, DbAdapter dbAdapter) {
+  public HistoryController(IWebHostEnvironment webHostEnvironment, TagHistoryContext context) {
     _webHostEnvironment = webHostEnvironment;
-    _dbAdapter = dbAdapter;
+    _context = context;
   }
 
   //[AllowAnonymous]
   public async Task<IActionResult> Index() {
-    return View();
+    return View(_context);
   }
 
   #endregion
@@ -34,16 +35,16 @@ public class HistoryController : Controller {
     //return View(await _dbAdapter.GetExitZones());
     //var list = new List<TagIdEntry>();
 
-    return View();
+    return View(_context);
   }
   public async Task<IActionResult> MinerSummary(/* Id, Date and Period */) {
-    return View(new List<TagIdEntry>());
+    return View(_context);
   }
   public async Task<IActionResult> MinerSummaryExtended(/* Id, Date and Days */) {
-    return View(new List<TagIdEntry>());
+    return View(_context);
   }
   public async Task<IActionResult> MineSnapshot(/* Date and time) */) {
-    return View(new List<TagIdEntry>());
+    return View(_context);
   }
 
 }

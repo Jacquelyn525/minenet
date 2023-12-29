@@ -3,6 +3,7 @@ using System.Net;
 using System.Runtime.Versioning;
 using System.Text;
 
+using MvcWeb.Models;
 using MvcWeb.Models.Configuration;
 using MvcWeb.Models.MineNet;
 
@@ -28,8 +29,8 @@ public class DbAdapter {
     _settings = settings;
   }
 
-  private async Task<List<T>> ExecuteQuery<T>(string query, string dateFolder = null, string tagDbFile = null
-    ) => await Task.Run(async () => {
+  private async Task<List<T>> ExecuteQuery<T>(string query, string dateFolder = null, string tagDbFile = null) {
+    return await Task.Run(async () => {
       var builder = dateFolder == null
         ? _settings.MineNetConfig.DbConnStr()
         : _settings.MineNetConfig.HistConnStr(dateFolder, tagDbFile);
@@ -59,8 +60,44 @@ public class DbAdapter {
 
       return results;
     });
+  }
 
   #endregion
+
+  #region History
+
+  // lets be honest - this is really just the same thing as executequery - so can probably deprecate and remove.
+  private async Task<List<TagIdEntry>> queryParadoxDb(string query, string datePath, string timePath) {
+    var entries = await ExecuteQuery<TagIdEntry>(query, datePath, timePath);
+    //sendHubUpdate($"Read {entries.Count} records... Now attempting to insert");
+
+    return entries;
+  }
+
+  private string HistoryQueryBase {
+    get {
+      var sb = new StringBuilder();
+      sb.Append("SELEC");
+      sb.AppendLine("[Tag ID],          [Address],        [ZoneNumber],     [DateKey],        [MinuteKey],");
+      sb.AppendLine("[Last Name],       [First Name],     [Zone],           [Reported],       [Battery],");
+      sb.AppendLine("[Signal Strength], [Message],        [Temperature],    [Source],         [Last Zone],");
+      sb.AppendLine("[Last Reported],   [Rate Reported],  [Last Rate],      [Message Count],");
+      sb.AppendLine("[Message Alarm],   [MinerID]");
+
+      return sb.ToString();
+    }
+  }
+
+
+  public async Task<List<TagIdListData>> GetArchiveUniqueTagIds(TagHistoryArchive path) {
+    var sb = new StringBuilder();
+    sb.Append("SELECT DISTINCT");
+    sb.AppendLine("[Tag ID], [First Name], [Last Name], [MinerID]");
+    sb.AppendLine($"FROM [{path.TimePath}]");
+    sb.AppendLine("ORDER BY [Tag ID] ASC");
+
+    return await ExecuteQuery<TagIdListData>(sb.ToString(), path.DatePath, path.TimePath);
+  }
 
   public async Task<List<TagIdEntry>> GetExitZones() {
     var query = new StringBuilder();
@@ -76,6 +113,10 @@ public class DbAdapter {
 
   }
 
+  #endregion
+
+  #region Locations
+
   public async Task<List<MinerEntry>> GetLocations() {
 
     var query = new StringBuilder();
@@ -87,6 +128,11 @@ public class DbAdapter {
 
     return await ExecuteQuery<MinerEntry>(query.ToString());
   }
+
+  #endregion
+
+  #region Alarms
+
   public async Task<List<AlertEntry>> GetAlerts() {
 
     var query = new StringBuilder();
@@ -96,6 +142,9 @@ public class DbAdapter {
 
     return await ExecuteQuery<AlertEntry>(query.ToString());
   }
+
+  #endregion
+
 
   #region Not Yet Implemented
 
