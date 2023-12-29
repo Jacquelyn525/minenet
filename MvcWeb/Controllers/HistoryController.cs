@@ -1,7 +1,6 @@
 using System;
 
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 using MvcWeb.Models.MineNet;
 using MvcWeb.Paradox;
@@ -31,13 +30,11 @@ public class HistoryController : Controller {
 
   #endregion
 
-
-  //[HttpPost]
   public async Task<IActionResult> MinersOnShift(/* Date and Period  */) {
     //return View(await _dbAdapter.GetExitZones());
-    var list = new List<TagIdEntry>();
+    //var list = new List<TagIdEntry>();
 
-    return View(new List<TagIdEntry>());
+    return View();
   }
   public async Task<IActionResult> MinerSummary(/* Id, Date and Period */) {
     return View(new List<TagIdEntry>());

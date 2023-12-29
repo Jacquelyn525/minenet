@@ -1,5 +1,4 @@
 using Microsoft.AspNetCore.Authentication.Negotiate;
-using Microsoft.EntityFrameworkCore;
 
 using Serilog;
 
@@ -27,12 +26,7 @@ var settings = new Settings(builder.Configuration);
 #endregion Builder and Settings
 
 try {
-
-  var connectionString = builder.Configuration.GetConnectionString("MineNetHistoryContext");
-
-  builder.Services.AddDbContext<MvcWeb.Models.MineNetDBContext>(options => options.UseSqlServer(connectionString));
-  builder.Services.AddDatabaseDeveloperPageExceptionFilter();
-
+  
   builder.Services.AddCors(options => {
     options.AddDefaultPolicy(
       builder => {
@@ -49,7 +43,6 @@ try {
   builder.Services.AddRazorPages();
 
   builder.Services.AddHostedService<NotificationService>();
-  builder.Services.AddHostedService<EtlService>();
 
 #if DEBUG
   builder.Services.AddSignalR(o => o.EnableDetailedErrors = true);

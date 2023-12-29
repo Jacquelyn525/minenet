@@ -32,14 +32,5 @@ public class MineNetHub : Hub<IMineNetHub> {
     _log.Information("LocationUpdate Notification Sent!");
     await Clients.All.LocationNotification(update);
   }
-
-  public async Task TagHistoryEtlUpdate(ITagHistoryEtlUpdate update) {
-    _log.Information("Tag History Etl Update Sent!");
-    await Clients.All.TagHistoryEtlUpdate(update);
-  }
-
-  public async Task Eff(ITagHistoryEtlUpdate update) {
-    _log.Information("Tag History Etl Update Sent!");
-    await Clients.All.TagHistoryEtlUpdate(update);
-  }
+  
 }
