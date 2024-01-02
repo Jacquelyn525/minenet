@@ -2,7 +2,7 @@ namespace MvcWeb.Models;
 
 public interface ITagHistoryContext {
 
-  IList<ITagHistoryArchive> TagHistoryArchives { get; set; }
-  IList<ITagIdListData> TagIdListData { get; set; }
+  IEnumerable<ITagHistoryArchive> TagHistoryArchives { get; set; }
+  IEnumerable<ITagIdListData> TagIdListData { get; set; }
 
 }

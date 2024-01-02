@@ -2,9 +2,13 @@ using System;
 
 using Microsoft.AspNetCore.Mvc;
 
+using Newtonsoft.Json;
+using Serilog;
+
 using MvcWeb.Models;
 using MvcWeb.Models.MineNet;
 using MvcWeb.Paradox;
+
 
 
 namespace GadgetStore.UI.MVC.Controllers;
@@ -15,6 +19,7 @@ public class HistoryController : Controller {
 
   #region Setup
 
+  private readonly Serilog.ILogger _log = Log.Logger;
   private readonly ITagHistoryContext _context;
   private readonly IWebHostEnvironment _webHostEnvironment;
 
@@ -34,6 +39,7 @@ public class HistoryController : Controller {
   public async Task<IActionResult> MinersOnShift(/* Date and Period  */) {
     //return View(await _dbAdapter.GetExitZones());
     //var list = new List<TagIdEntry>();
+    //_log.Debug(JsonConvert.SerializeObject(_context.TagHistoryArchives));
 
     return View(_context);
   }

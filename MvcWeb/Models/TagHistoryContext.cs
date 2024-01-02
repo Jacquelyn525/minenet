@@ -1,4 +1,8 @@
 using System.Collections;
+using System.Diagnostics;
+using System.Linq;
+
+using Microsoft.CodeAnalysis.Elfie.Model;
 
 using MvcWeb.Paradox;
 
@@ -7,7 +11,7 @@ using Serilog;
 namespace MvcWeb.Models;
 
 
-[SingletonService]
+[TransientService]
 public class TagHistoryContext : ITagHistoryContext {
 
   #region CTOR and locals
@@ -28,13 +32,23 @@ public class TagHistoryContext : ITagHistoryContext {
   #endregion
 
   private void init() {
+
+    var timer = new Stopwatch();
+    timer.Start();
+
+    //B: Run stuff you want timed
+
     GetHistoryArchiveDbFiles();
+    timer.Stop();
+    TimeSpan timeTaken = timer.Elapsed;
+    string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");
+    _log.Debug(foo);
   }
 
 
-  public IList<ITagHistoryArchive> TagHistoryArchives { get; set; }
+  public IEnumerable<ITagHistoryArchive> TagHistoryArchives { get; set; } = new List<ITagHistoryArchive>();
 
-  public IList<ITagIdListData> TagIdListData { get; set; }
+  public IEnumerable<ITagIdListData> TagIdListData { get; set; } = new List<ITagIdListData>();
 
   private void GetHistoryArchiveDbFiles() {
     var tagRoot = $@"{historyRoot}\TagID";
@@ -56,17 +70,40 @@ public class TagHistoryContext : ITagHistoryContext {
             FileNamePath = fullPath.Replace(_settings.MineNetConfig.MineNetPath, "")
           };
 
-          var TagIdEntries = _dbAdapter.GetArchiveUniqueTagIds(path).Result;
+          //var TagIdEntries = _dbAdapter.GetArchiveUniqueTagIds(path).Result;
 
-          path.TagIdListData = TagIdEntries.ToList<ITagIdListData>();
+          //path.TagIdListData = TagIdEntries.ToList<ITagIdListData>();
+          //path.TagIdListData = new List<ITagIdListData>();
 
           paths.Add(path);
 
         }
       }
 
+
+      // look here for possible perf. improvements
+      var tagIdListData = paths.Select(p => _dbAdapter.GetArchiveUniqueTagIds(p));
+
+      var res = Task.WhenAll(tagIdListData).Result;
+
+      //this.TagIdListData = results.ToList<ITagIdListData>();
+      TagIdListData = MergeResults(res);
+
       TagHistoryArchives = paths;
     }
   }
+
+  static List<ITagIdListData> MergeResults(List<TagIdListData>[] results) {
+    // Merge the results from different databases
+    var mergedResult = new List<ITagIdListData>();
+
+    foreach (var result in results) {
+      mergedResult.AddRange(result);
+    }
+
+    return mergedResult;
+  }
+
+
 
 }

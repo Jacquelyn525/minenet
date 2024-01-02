@@ -29,6 +29,10 @@ public class DbAdapter {
     _settings = settings;
   }
 
+  #endregion
+
+  #region Private Nuts and Bolts
+
   private async Task<List<T>> ExecuteQuery<T>(string query, string dateFolder = null, string tagDbFile = null) {
     return await Task.Run(async () => {
       var builder = dateFolder == null
@@ -44,16 +48,16 @@ public class DbAdapter {
       connection.Open();
 
       try {
-        await using (var reader = command.ExecuteReader()) {
+        await using (var reader = await command.ExecuteReaderAsync()) {
           if (reader != null && reader.HasRows) {
-            while (reader.Read()) {
+            while (await reader.ReadAsync()) {
               results.Add(reader.ReadAsParadoxModel<T>());
             }
           }
         }
       } catch (Exception ex) {
         _log.Error("{0}\n{1}", ex.Message, ex.StackTrace);
-        throw;
+        //throw;
       }
 
       connection.Close();
@@ -61,6 +65,26 @@ public class DbAdapter {
       return results;
     });
   }
+
+  //static async Task<List<string>> ReadDatabaseAsync(string filePath) {
+  //  // Read data from the database file asynchronously
+  //  var connectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={filePath};Integrated Security=True";
+  //  using (var connection = new SqlConnection(connectionString)) {
+  //    await connection.OpenAsync();
+
+  //    using (var command = new SqlCommand("SELECT * FROM YourTable", connection))
+  //    using (var reader = await command.ExecuteReaderAsync()) {
+  //      var result = new List<string>();
+
+  //      while (await reader.ReadAsync()) {
+  //        // Process each row as needed
+  //        result.Add(reader.GetString(0)); // Assuming a string column, adjust accordingly
+  //      }
+
+  //      return result;
+  //    }
+  //  }
+  //}
 
   #endregion
 
@@ -89,7 +113,12 @@ public class DbAdapter {
   }
 
 
-  public async Task<List<TagIdListData>> GetArchiveUniqueTagIds(TagHistoryArchive path) {
+  private void ReadArchivesAsync(List<ITagHistoryArchive> archives) {
+
+  }
+
+
+  public async Task<List<TagIdListData>> GetArchiveUniqueTagIds(ITagHistoryArchive path) {
     var sb = new StringBuilder();
     sb.Append("SELECT DISTINCT");
     sb.AppendLine("[Tag ID], [First Name], [Last Name], [MinerID]");

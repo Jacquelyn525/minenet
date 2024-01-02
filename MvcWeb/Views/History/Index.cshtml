@@ -11,72 +11,17 @@
 <div class="row">
     <div class="col-md-4">
         <form asp-action="MinersOnShift" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
             <div class="form-group">
-                <label asp-for="TagIdListData" class="control-label"></label>
-                <input asp-for="TagIdListData" class="form-control" />
-                <span asp-validation-for="TagIdListData" class="text-danger"></span>
+            <label asp-for="TagIdListData" class="control-label">Miner:</label>
+            <select>
+                @foreach (var tag in Model.TagIdListData)
+                {
+                    <option asp-action="SelectedTag" asp-controller="History">@tag.FullName</option>
+
+                }
+            </select>
             </div>
-            @*
-            <div class="form-group">
-                <label asp-for="DateKey" class="control-label"></label>
-                <input asp-for="DateKey" class="form-control" />
-                <span asp-validation-for="DateKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MinuteKey" class="control-label"></label>
-                <input asp-for="MinuteKey" class="form-control" />
-                <span asp-validation-for="MinuteKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MinuteKey" class="control-label"></label>
-                <input asp-for="MinuteKey" class="form-control" />
-                <span asp-validation-for="MinuteKey" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MinuteKey" class="control-label"></label>
-                <input asp-for="MinuteKey" class="form-control" />
-                <span asp-validation-for="MinuteKey" class="text-danger"></span>
-            </div> *@
-            <!--
-            @*
-              * <div class="form-group">
-              * <label asp-for="ProductDescription" class="control-label"></label>
-              * <input asp-for="ProductDescription" class="form-control" />
-              * <span asp-validation-for="ProductDescription" class="text-danger"></span>
-              * </div>
-              * <div class="form-group">
-              * <label asp-for="UnitsInStock" class="control-label"></label>
-              * <input asp-for="UnitsInStock" class="form-control" />
-              * <span asp-validation-for="UnitsInStock" class="text-danger"></span>
-              * </div>
-              * <div class="form-group">
-              * <label asp-for="UnitsOnOrder" class="control-label"></label>
-              * <input asp-for="UnitsOnOrder" class="form-control" />
-              * <span asp-validation-for="UnitsOnOrder" class="text-danger"></span>
-              * </div>
-              * <div class="form-group form-check">
-              * <label class="form-check-label">
-              * <input class="form-check-input" asp-for="IsDiscontinued" /> @Html.DisplayNameFor(model => model.IsDiscontinued)
-              * </label>
-              * </div>
-              * <div class="form-group">
-              * <label asp-for="CategoryId" class="control-label"></label>
-              * <select asp-for="CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-              * <span asp-validation-for="CategoryId" class="text-danger"></span>
-              * </div>
-              * <div class="form-group">
-              * <label asp-for="SupplierId" class="control-label"></label>
-              * <select asp-for="SupplierId" class="form-control" asp-items="ViewBag.SupplierId"></select>
-              * <span asp-validation-for="SupplierId" class="text-danger"></span>
-              * </div>
-              * <div class="form-group">
-              * <label asp-for="ProductImage" class="control-label"></label>
-              * <input type="file" asp-for="Image" />
-              * <span asp-validation-for="ProductImage" class="text-danger"></span>
-              * </div>
-              *@
-            -->
             <div class="form-group">
                 <input type="submit" value="Search" class="btn btn-primary" />
             </div>
