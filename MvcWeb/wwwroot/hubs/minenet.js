@@ -1,7 +1,6 @@
 $(document).ready(function () {
   var filterId = 0;
 
-
   // #region Hub
 
 
@@ -13,7 +12,7 @@ $(document).ready(function () {
   connection
     .start()
     .then(function () {
-      console.log("Connected to hub");
+      console.log("Connected to minenet hub");
     })
     .catch(function (err) {
       console.error(err.toString());
@@ -48,15 +47,14 @@ $(document).ready(function () {
 
   //#endregion
 
-
   //#region Grids
 
   function updateLocationsGrid(tagsData) {
     var gridBody = $("#tags-grid-body");
-    console.log(`Filter Id: ${filterId}`);
+
     gridBody.empty();
 
-    tagsData.locations.forEach((entry) => {
+    filterGridByTagId(tagsData.locations, filterId).forEach((entry) => {
       var row = $("<tr>");
 
       row.append("<th scope='row' />");
@@ -99,18 +97,11 @@ $(document).ready(function () {
 
   //#endregion
 
-
-
   $('#myTabs a').on('click', function (e) {
     e.preventDefault();
-
-    var tabId = $(this).data('tab-id');
-    console.log("TabId=" + tabId);
-    filterId = tabId;
-
+    filterId = $(this).data('tab-id');
+    setGridTitle(filterId);
     $(this).tab('show');
-
-    //updateNumericValue(tabId);
   });
 
   // Function to update numeric value based on tabId
