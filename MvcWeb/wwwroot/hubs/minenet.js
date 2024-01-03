@@ -103,8 +103,9 @@ $(document).ready(function () {
 
   $('#myTabs a').on('click', function (e) {
     e.preventDefault();
-     
+
     var tabId = $(this).data('tab-id');
+    console.log("TabId=" + tabId);
     filterId = tabId;
 
     $(this).tab('show');
