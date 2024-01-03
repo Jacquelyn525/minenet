@@ -1,131 +1,248 @@
 @{
-    ViewData["Title"] = "Miner Locations";
+  ViewData["Title"] = "Miner Locations";
 }
 
-<div class="container">
-    <ul class="nav nav-tabs"
-        id="myTabs">
-        <li class="nav-item">
-            <a class="nav-link active"
-               id="tab-miner"
-               data-toggle="tab"
-               href="#content1"
-               data-tab-id="0">Miners</a>
-        </li>
+<div class="container p-0 m-0">
+  <ul class="nav nav-pills" id="myTabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="tab-miner" data-toggle="tab" href="#content1" data-tab-id="0">Miners</a>
+    </li>
 
-        <li class="nav-item">
-            <a class="nav-link"
-               id="tab-saf"
-               data-toggle="tab"
-               href="#content2"
-               data-tab-id="1">SAFs</a>
-        </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-saf" data-toggle="tab" href="#content2" data-tab-id="1">SAFs</a>
+    </li>
 
-        <li class="nav-item">
-            <a class="nav-link"
-               id="tab-emt"
-               data-toggle="tab"
-               href="#content3"
-               data-tab-id="2">EMTs</a>
-        </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-emt" data-toggle="tab" href="#content3" data-tab-id="2">EMTs</a>
+    </li>
 
-        <li class="nav-item">
-            <a class="nav-link"
-               id="tab-cnt"
-               data-toggle="tab"
-               href="#content3"
-               data-tab-id="3">CNTs</a>
-        </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-cnt" data-toggle="tab" href="#content3" data-tab-id="3">CNTs</a>
+    </li>
 
-        <li class="nav-item">
-            <a class="nav-link"
-               id="tab-equip"
-               data-toggle="tab"
-               href="#content3"
-               data-tab-id="4">Equipment</a>
-        </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-equip" data-toggle="tab" href="#content3" data-tab-id="4">Equipment</a>
+    </li>
 
-        <li class="nav-item">
-            <a class="nav-link"
-               id="tab-supcar"
-               data-toggle="tab"
-               href="#content3"
-               data-tab-id="5">Supply Cars</a>
-        </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-supcar" data-toggle="tab" href="#content3" data-tab-id="5">Supply Cars</a>
+    </li>
 
-        <li class="nav-item">
-            <a class="nav-link"
-               id="tab-pad"
-               data-toggle="tab"
-               href="#content3"
-               data-tab-id="6">Pads</a>
-        </li>
+    <li class="nav-item">
+      <a class="nav-link" id="tab-pad" data-toggle="tab" href="#content3" data-tab-id="6">Pads</a>
+    </li>
 
-    </ul>
+  </ul>
 
-    <div class="tab-content mt-2">
-        <div id="content1" class="tab-pane fade show active">
-            <div class="container">
-                <h3>Miner Locations</h3>
-                <div style="max-height: 45vh; height: 45vh; overflow-y: auto">
-                    <table class="table tableFixHead">
-                        <thead>
-                            <tr>
-                                <th scope="col" />
-                                <th scope="col">Tag ID</th>
-                                <th scope="col">Miner ID</th>
-                                <th scope="col">Last Name</th>
-                                <th scope="col">First Name</th>
-                                <th scope="col">Addr</th>
-                                <th scope="col">Zone</th>
-                                <th scope="col">Reported</th>
-                                <th scope="col">Duration</th>
-                            </tr>
-                        </thead>
-                        <tbody id="tags-grid-body" />
-                    </table>
-                </div>
-            </div>
+  <div class=" tab-content">
+    <div id="content1" class="tab-pane fade show active px-2 py-3 m-0">
+      <div class="card pb-2">
+        <div class="card-header pt-3">
+          <center class="small">
+            <h3 class="card-title">On Shift Miner Location</h3>
+          </center>
         </div>
-        <div id="content2"
-             class="tab-pane fade">
-            <h3>Content for Tab 2</h3>
-            <p>This is the content for Tab 2.</p>
-            <p>Numeric Value: <span id="numericValue2"></span></p>
+        <div class="card-body pt-0" style="height: 50vh; overflow-y: auto">
+          <table class="table table-sm table-light tableFixHead">
+            <thead>
+              <tr>
+                <th scope="col" />
+                <th scope="col">Tag ID</th>
+                <th scope="col">Miner ID</th>
+                <th scope="col">Last Name</th>
+                <th scope="col">First Name</th>
+                <th scope="col">Addr</th>
+                <th scope="col">Zone</th>
+                <th scope="col">Reported</th>
+                <th scope="col">Duration</th>
+              </tr>
+            </thead>
+            <tbody id="tags-grid-body" />
+          </table>
         </div>
-        <div id="content3"
-             class="tab-pane fade">
-            <h3>Content for Tab 3</h3>
-            <p>This is the content for Tab 3.</p>
-            <p>Numeric Value: <span id="numericValue3"></span></p>
-        </div>
-        <div id="content3"
-             class="tab-pane fade">
-            <h3>Content for Tab 3</h3>
-            <p>This is the content for Tab 3.</p>
-            <p>Numeric Value: <span id="numericValue3"></span></p>
-        </div>
-        <div id="content3"
-             class="tab-pane fade">
-            <h3>Content for Tab 3</h3>
-            <p>This is the content for Tab 3.</p>
-            <p>Numeric Value: <span id="numericValue3"></span></p>
-        </div>
-        <div id="content3"
-             class="tab-pane fade">
-            <h3>Content for Tab 3</h3>
-            <p>This is the content for Tab 3.</p>
-            <p>Numeric Value: <span id="numericValue3"></span></p>
-        </div>
-        <div id="content3"
-             class="tab-pane fade">
-            <h3>Content for Tab 3</h3>
-            <p>This is the content for Tab 3.</p>
-            <p>Numeric Value: <span id="numericValue3"></span></p>
-        </div>
+      </div>
     </div>
+    <div id="content2" class="tab-pane fade">
+      <div class="card-header pt-3">
+        <center class="small">
+          <h3 class="card-title">On Shift SAF Location</h3>
+        </center>
+      </div>
+      <div class="card-body pt-0" style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table table-sm table-light tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+            </tr>
+          </thead>
+          <tbody />
+          @* <tbody id="tags-grid-body" /> *@
+        </table>
+      </div>
+    </div>
+    <div id="content3" class="tab-pane fade">
+      <div class="card-header pt-3">
+        <center class="small">
+          <h3 class="card-title">On Shift ENT Location</h3>
+        </center>
+      </div>
+      <div class="card-body pt-0" style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table table-sm table-light tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+            </tr>
+          </thead>
+          <tbody />
+          @* <tbody id="tags-grid-body" /> *@
+        </table>
+      </div>
+    </div>
+    <div id="content4" class="tab-pane fade">
+      <div class="card-header pt-3">
+        <center class="small">
+          <h3 class="card-title">On Shift CNT Location</h3>
+        </center>
+      </div>
+      <div class="card-body pt-0" style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table table-sm table-light tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+            </tr>
+          </thead>
+          <tbody />
+          @* <tbody id="tags-grid-body" /> *@
+        </table>
+      </div>
+    </div>
+    <div id="content5" class="tab-pane fade">
+      <div class="card-header pt-3">
+        <center class="small">
+          <h3 class="card-title">On Shift Equipment Location</h3>
+        </center>
+      </div>
+      <div class="card-body pt-0" style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table table-sm table-light tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+            </tr>
+          </thead>
+          <tbody />
+          @* <tbody id="tags-grid-body" /> *@
+        </table>
+      </div>
+    </div>
+    <div id="content6" class="tab-pane fade">
+      <div class="card-header pt-3">
+        <center class="small">
+          <h3 class="card-title">On Shift Supply Car Location</h3>
+        </center>
+      </div>
+      <div class="card-body pt-0" style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table table-sm table-light tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+            </tr>
+          </thead>
+          <tbody />
+          @* <tbody id="tags-grid-body" /> *@
+        </table>
+      </div>
+    </div>
+    <div id="content7" class="tab-pane fade">
+      <div class="card-header pt-3">
+        <center class="small">
+          <h3 class="card-title">On Shift Pad Location</h3>
+        </center>
+      </div>
+      <div class="card-body pt-0" style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table table-sm table-light tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+            </tr>
+          </thead>
+          <tbody />
+          @* <tbody id="tags-grid-body" /> *@
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!--
+
+<div class="container p-0 m-0">
+  <ul class="nav nav-pills" id="myTabs">
+    <li class="nav-item">
+      <a class="nav-link active" id="tab-miner" data-toggle="tab" href="#content1" data-tab-id="0">Miners</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="tab-saf" data-toggle="tab" href="#content2" data-tab-id="1">SAFs</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="tab-emt" data-toggle="tab" href="#content3" data-tab-id="2">EMTs</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="tab-cnt" data-toggle="tab" href="#content3" data-tab-id="3">CNTs</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="tab-equip" data-toggle="tab" href="#content3" data-tab-id="4">Equipment</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="tab-supcar" data-toggle="tab" href="#content3" data-tab-id="5">Supply Cars</a>
+    </li>
+
+    <li class="nav-item">
+      <a class="nav-link" id="tab-pad" data-toggle="tab" href="#content3" data-tab-id="6">Pads</a>
+    </li>
+
+  </ul>
+
+  <div class="container tab-content bg-white border border-1 border-top-0">
+    <div id="content1" class="tab-pane fade show active px-2 py-3 m-0">
+      <center class="small">
+        <h3>Miner Locations</h3>
+      </center>
+      <div style="max-height: 45vh; height: 45vh; overflow-y: auto">
+        <table class="table tableFixHead">
+          <thead>
+            <tr>
+              <th scope="col" />
+              <th scope="col">Tag ID</th>
+              <th scope="col">Miner ID</th>
+              <th scope="col">Last Name</th>
+              <th scope="col">First Name</th>
+              <th scope="col">Addr</th>
+              <th scope="col">Zone</th>
+              <th scope="col">Reported</th>
+              <th scope="col">Duration</th>
+            </tr>
+          </thead>
+          <tbody id="tags-grid-body" />
+        </table>
+      </div>
+    </div>
+    <div id="content2" class="tab-pane fade"></div>
+    <div id="content3" class="tab-pane fade"></div>
+    <div id="content4" class="tab-pane fade"></div>
+    <div id="content5" class="tab-pane fade"></div>
+    <div id="content6" class="tab-pane fade"></div>
+    <div id="content7" class="tab-pane fade"></div>
+  </div>
 </div>
 
-
-
-
+-->
