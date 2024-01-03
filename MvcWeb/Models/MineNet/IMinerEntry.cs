@@ -9,4 +9,11 @@ public interface IMinerEntry {
   string Zone { get; set; }
   DateTime Reported { get; set; }
   short SignalStrength { get; set; }
+
 }
+
+//"InZone"
+//"OutZone"
+//"InTime"
+//"OutTime"
+//"Duration"

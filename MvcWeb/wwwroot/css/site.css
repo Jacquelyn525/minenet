@@ -24,7 +24,6 @@ body {
 
 .tableFixHead {
   overflow-y: auto;
-
 }
 
   .tableFixHead thead th {
@@ -35,3 +34,15 @@ body {
 .footer {
   line-height: 25px !important;
 }
+
+
+/*
+
+    nMiner: limegreen
+    nSAFs:  lightblue
+    nEMTs:  greenyellow
+    nCNTs:  orange
+    nEquip: orangered
+
+
+*/

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Data.OleDb;
 using System.Net;
 using System.Runtime.Versioning;
@@ -8,6 +9,8 @@ using MvcWeb.Models.Configuration;
 using MvcWeb.Models.MineNet;
 
 using Serilog;
+
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace MvcWeb.Paradox;
 
@@ -64,6 +67,10 @@ public class DbAdapter {
 
       return results;
     });
+  }
+
+  private async Task<List<MinerEntry>> ParadoxQuery(StringBuilder query) {
+    return await ExecuteQuery<MinerEntry>(query.ToString());
   }
 
   //static async Task<List<string>> ReadDatabaseAsync(string filePath) {
@@ -130,7 +137,7 @@ public class DbAdapter {
 
   public async Task<List<TagIdEntry>> GetExitZones() {
     var query = new StringBuilder();
-    query.Append("Select [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]");
+    query.Append("SELECT [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]");
     query.Append("From [  ...  ]");
     query.Append("IN");
     query.Append("[  ...  ] ");
@@ -146,16 +153,88 @@ public class DbAdapter {
 
   #region Locations
 
+  public async Task<List<MinerEntry>> GetTags() {
+    //var query = "SELECT * from [TagReader]";
+    var query = new StringBuilder();
+
+    query.Append("SELECT [Tag ID], [Address], [ZoneNumber], [DateKey], [MinuteKey], [Last Name], [First Name],");
+    query.AppendLine("[Zone], [Reported], [Battery], [Signal Strength], [Message], [Temperature], [Source],");
+    query.AppendLine("[Last Zone], [Last Reported], [Rate Reported], [Last Rate], [Message], [Count], [Message],");
+    query.AppendLine("[Alarm], [MinerID] FROM [TagReader]");
+
+
+    return await ExecuteQuery<MinerEntry>(query.ToString());
+  }
+
   public async Task<List<MinerEntry>> GetLocations() {
 
     var query = new StringBuilder();
 
-    query.Append("Select t4.[Tag ID], t4.[MinerID], t4.[Last Name], t4.[First Name], t4.[Address], t4.[ZoneNumber], t4.[Zone], t4.[Reported], t4.[Signal Strength]");
-    query.AppendLine(" From (Select [Tag ID], Max([Reported]) as Latest From [TagReader] Group By [Tag ID]) as t2 Inner Join (Select * From [TagReader] as t1");
-    query.AppendLine(" Where Not Exists (Select * from [ExitZone] as t3 Where t1.[Address] = t3.[Address] And t1.[ZoneNumber] = t3.[ZoneNumber])) as t4");
-    query.AppendLine(" On (t4.[Tag ID] = t2.[Tag ID]) And (t4.[Reported] = t2.[Latest]) Order By t4.[Last Name], t4.[First Name], t4.[Tag ID], t4.[Signal Strength] DESC");
+    query.AppendLine("SELECT");
+    query.AppendLine("    t4.[Tag ID],");
+    query.AppendLine("    t4.[MinerID],");
+    query.AppendLine("    t4.[Last Name],");
+    query.AppendLine("    t4.[First Name], t4.[Address],");
+    query.AppendLine("    t4.[ZoneNumber], t4.[Zone],");
+    query.AppendLine("    t4.[Reported],");
+    query.AppendLine("    t4.[Signal Strength]");
+    query.AppendLine("FROM");
+    query.AppendLine("  (  ");
+    query.AppendLine("    SELECT");
+    query.AppendLine("        [Tag ID],");
+    query.AppendLine("        Max([Reported]) as Latest");
+    query.AppendLine("    From [TagReader]");
+    query.AppendLine("    Group By [Tag ID]");
+    query.AppendLine("  ) as t2");
+    query.AppendLine("Inner JOIN");
+    query.AppendLine("  (   ");
+    query.AppendLine("    SELECT *");
+    query.AppendLine("    From [TagReader] as t1");
+    query.AppendLine("    Where Not Exists");
+    query.AppendLine("      (   ");
+    query.AppendLine("        SELECT *");
+    query.AppendLine("        from [ExitZone] as t3");
+    query.AppendLine("        Where t1.[Address] = t3.[Address] And t1.[ZoneNumber] = t3.[ZoneNumber]");
+    query.AppendLine("      )   ");
+    query.AppendLine("  ) as t4  ");
+    query.AppendLine("  On (t4.[Tag ID] = t2.[Tag ID]) And (t4.[Reported] = t2.[Latest])");
+    query.AppendLine("Order By t4.[Last Name], t4.[First Name], t4.[Tag ID], t4.[Signal Strength] DESC");
 
-    return await ExecuteQuery<MinerEntry>(query.ToString());
+    return await ParadoxQuery(query);
+  }
+
+  public async Task<List<MinerEntry>> GetEquipment() {
+    var query = new StringBuilder();
+
+    query.Append("SELECT [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]");
+    query.AppendLine("From [Equipment]");
+    query.AppendLine(" Order By [Last Name], [First Name], [Tag ID], [Signal Strength] DESC");
+
+    return await ParadoxQuery(query);
+  }
+
+  public async Task<List<MinerEntry>> GetSupplyCars() {
+    var query = new StringBuilder();
+
+    query.AppendLine("Select");
+    query.AppendLine("      [Tag ID]");
+    query.AppendLine("    , [MinerID]");
+    query.AppendLine("    , [Last Name]");
+    query.AppendLine("    , [First Name]");
+    query.AppendLine("    , [Address]");
+    query.AppendLine("    , [ZoneNumber]");
+    query.AppendLine("    , [Zone]");
+    query.AppendLine("    , [Reported]");
+    query.AppendLine("    , [Signal Strength]");
+    query.AppendLine("FROM");
+    query.AppendLine("    [Equipment]");
+    query.AppendLine("WHERE");
+    query.AppendLine("      ([Last Name] Like '%EQUIPMENT%')  ");
+    query.AppendLine("  OR  ");
+    query.AppendLine("      ([Last Name] Like '%EQUIPMENT%' AND [First Name] Like '(%)%') ");
+    query.AppendLine("Order By [First Name]");
+
+    return await ParadoxQuery(query);
   }
 
   #endregion
@@ -166,7 +245,7 @@ public class DbAdapter {
 
     var query = new StringBuilder();
 
-    query.Append("Select [Address], [Device], [Type], [Alarm], [Occured], [Location], [Acknowledged], [Note]");
+    query.Append("SELECT [Address], [Device], [Type], [Alarm], [Occured], [Location], [Acknowledged], [Note]");
     query.AppendLine("FROM [Alarm]");
 
     return await ExecuteQuery<AlertEntry>(query.ToString());
@@ -177,9 +256,54 @@ public class DbAdapter {
 
   #region Not Yet Implemented
 
-  public async Task<List<MinerEntry>> GetEquipment() => await Task.Run(() => new List<MinerEntry>());
-  public async Task<List<MinerEntry>> GetSupplyCars() => await Task.Run(() => new List<MinerEntry>());
-  public async Task<List<MinerEntry>> GetTags() => await Task.Run(() => new List<MinerEntry>());
+  //  xmlHistory.asp
+  //
+  //  cWorkFlow.OnShift
+  //    CDate(source),
+  //    CInt(start),
+  //    CInt(end)
+  // 
+  //  cBusLogic.GetDailyRawData()
+  public async Task OnShift(DateOnly date, int periodStart, int periodEnd) {
+    var query = new StringBuilder();
+    query.AppendLine("          Select                        ");
+    query.AppendLine("                [Tag ID]                ");
+    query.AppendLine("              , [MinerID]               ");
+    query.AppendLine("              , [Last Name]             ");
+    query.AppendLine("              , [First Name]            ");
+    query.AppendLine("              , [Address]               ");
+    query.AppendLine("              , [ZoneNumber]            ");
+    query.AppendLine("              , [Zone]                  ");
+    query.AppendLine("              , [Reported]              ");
+    query.AppendLine("              , [Signal Strength]       ");
+    query.AppendLine("          From                          ");
+    query.AppendLine("                [   ...  ]              ");
+    query.AppendLine("                                        ");
+    query.AppendLine("          IN                            ");
+    query.AppendLine("                                        ");
+    query.AppendLine("                [   ...  ]              ");
+    query.AppendLine("                                        ");
+    query.AppendLine("          Where                         ");
+    query.AppendLine("                [Tag ID] = [  ...  ]    ");
+    query.AppendLine("                                        ");
+    query.AppendLine("          UNION ALL                     ");
+    query.AppendLine("                                        ");
+    query.AppendLine("          ORDER BY                      ");
+    query.AppendLine("                [Tag ID]                ");
+    query.AppendLine("              , [Reported]              ");
+    query.AppendLine("              , [Signal Strength]       ");
+  }
+
+  /*
+    https://github.com/Muqluk/minenet/blob/develop/docs/discovery/code-autopsy-notes.md
+
+      internally referenced     cWorkFlow.GetExitZones()                                               cBusLogic.GetDailyRawData()
+      xmlidHistory.asp          cWorkFlow.Location(CInt(id), CDate(source), CInt(start), CInt(end))    cBusLogic.GetDailyRawData()
+      xmlidHistoryEx.asp        cWorkFlow.LocationEx(CDate(source), CInt(id), CInt(days))              cBusLogic.GetDailyRawData()
+      xmlSnap.asp               cWorkFlow.Snapshot(CDate(source) + CDate(snap))                        cBusLogic.GetDailyRawData()
+
+
+    */
 
   #endregion
 }
