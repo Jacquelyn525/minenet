@@ -1,7 +1,12 @@
-// todo:  extract to libs file
 $(document).ready(function () {
+  var filterId = 0;
+
+
+  // #region Hub
+
+
   var connection = new signalR.HubConnectionBuilder()
-    .withUrl("/ws") // Replace with your actual hub path
+    .withUrl("/ws")
     .configureLogging(signalR.LogLevel.Information)
     .build();
 
@@ -14,11 +19,24 @@ $(document).ready(function () {
       console.error(err.toString());
     });
 
-  function dataCol(colValue) {
-    //var col = $("<div class='grid-column'>");
-    //col.append(colValue);
-    //col.append("</div>");
+  connection.on("LocationNotification", function (updatedData) {
+    if (updatedData && updatedData.locations) {
+      updateLocationsGrid(updatedData);
+    }
+  });
 
+  connection.on("AlertNotification", function (alertsData) {
+    updateAlertsGrid(alertsData);
+  });
+
+  connection.on("LocationUpdate", function (updatedData) {
+    if (updatedData && updatedData.locations) {
+      updateLocationsGrid(updatedData);
+    }
+  });
+
+
+  function dataCol(colValue) {
     var col = $("<td>");
 
     col.append(colValue);
@@ -27,50 +45,35 @@ $(document).ready(function () {
     return col;
   }
 
+
+  //#endregion
+
+
+  //#region Grids
+
   function updateLocationsGrid(tagsData) {
     var gridBody = $("#tags-grid-body");
-
+    console.log(`Filter Id: ${filterId}`);
     gridBody.empty();
 
     tagsData.locations.forEach((entry) => {
-      //var row = $("<div class='grid-row'>");
       var row = $("<tr>");
 
-      row.append("<th scope='row'>");
-      row.append(entry.tagID);
-      row.append("</th>");
+      row.append("<th scope='row' />");
+
+      row.append(dataCol(entry.tagID));
       row.append(dataCol(entry.minerID));
       row.append(dataCol(entry.lastName));
       row.append(dataCol(entry.firstName));
       row.append(dataCol(entry.address));
-      row.append(dataCol(entry.zoneNumber));
       row.append(dataCol(entry.zone));
       row.append(dataCol(entry.reported));
       row.append(dataCol(entry.signalStrength));
+
       row.append("</tr>");
-      //row.append("</div>");
 
       gridBody.append(row);
     });
-
-    // Make the grid sortable
-    //$("#sortable-grid")
-    //  .sortable({
-    //    items: ".grid-row",
-    //    cursor: "grabbing",
-    //    update: function (event, ui) {
-    //      // Handle sorting updates
-    //      var sortedIds = $("#sortable-grid .grid-row")
-    //        .map(function () {
-    //          return $(this).index();
-    //        })
-    //        .get();
-
-    //      // Send sortedIds to the hub or perform any required action
-    //      connection.invoke("UpdateSortOrder", sortedIds);
-    //    },
-    //  })
-    //  .disableSelection();
   }
 
   function updateAlertsGrid(alertsData) {
@@ -79,73 +82,40 @@ $(document).ready(function () {
     gridBody.empty();
 
     alertsData.alerts.forEach((entry) => {
-      //var row = $("<div class='grid-row'>");
       var row = $("<tr>");
 
       row.append("<th scope='row' />");
-      //row.append(entry.address);
-      //row.append("</th>");
-
       row.append(dataCol(entry.address));
       row.append(dataCol(entry.device));
       row.append(dataCol(entry.type));
       row.append(dataCol(entry.alarm));
       row.append(dataCol(entry.occured));
       row.append(dataCol(entry.location));
-      //row.append(dataCol(entry.acknowledged));
-      //row.append(dataCol(entry.note));
       row.append("</tr>");
-      //row.append("</div>");
 
       gridBody.append(row);
     });
-
-    // Make the grid sortable
-    // $("#sortable-grid")
-    //   .sortable({
-    //     items: ".grid-row",
-    //     cursor: "grabbing",
-    //     update: function (event, ui) {
-    //       // Handle sorting updates
-    //       var sortedIds = $("#sortable-grid .grid-row")
-    //         .map(function () {
-    //           return $(this).index();
-    //         })
-    //         .get();
-
-    //       // Send sortedIds to the hub or perform any required action
-    //       connection.invoke("UpdateSortOrder", sortedIds);
-    //     },
-    //   })
-    //   .disableSelection();
   }
 
-  // Call the updateLocationsGrid function initially and after any hub updates
-  //updateLocationsGrid();
+  //#endregion
 
-  // Hub method to receive updates from the server
-  connection.on("LocationNotification", function (updatedData) {
-    if (updatedData && updatedData.locations) {
-      updateLocationsGrid(updatedData);
-    }
+
+
+  $('#myTabs a').on('click', function (e) {
+    e.preventDefault();
+     
+    var tabId = $(this).data('tab-id');
+    filterId = tabId;
+
+    $(this).tab('show');
+
+    //updateNumericValue(tabId);
   });
 
-  // Hub method to receive updates from the server
-  connection.on("AlertNotification", function (alertsData) {
-    updateAlertsGrid(alertsData);
-  });
-
-  // Hub method to receive updates from the server
-  //connection.on("TagHistoryEtlUpdate", function (updatedData) {
-  //  data = updatedData;
-  //  console.log(data);
-  //  updateLocationsGrid();
-  //});
-
-  // Hub method to receive updates from the server
-  connection.on("LocationUpdate", function (updatedData) {
-    if (updatedData && updatedData.locations) {
-      updateLocationsGrid(updatedData);
-    }
-  });
+  // Function to update numeric value based on tabId
+  function updateNumericValue(tabId) {
+    // You can perform logic here based on the tabId
+    var numericValue = tabId * 100; // For example, multiply tabId by 100
+    $('#numericValue' + tabId).text(numericValue);
+  }
 });

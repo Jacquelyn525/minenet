@@ -1,6 +1,57 @@
 @{
     ViewData["Title"] = "Miner Locations";
 }
+@* <ul class="nav nav-tabs">
+  <li class="nav-item">
+    <a class="nav-link active" aria-current="page" href="#">Active</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="#">Link</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+  </li>
+</ul> *@
+
+<div class="container mt-5">
+    <h2>Bootstrap Tab Menu with jQuery</h2>
+
+    <ul class="nav nav-tabs" id="myTabs">
+        <li class="nav-item">
+            <a class="nav-link active" id="tab1" data-toggle="tab" href="#content1" data-tab-id="0">Tab 1</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab2" data-toggle="tab" href="#content2" data-tab-id="1">Tab 2</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link" id="tab3" data-toggle="tab" href="#content3" data-tab-id="2">Tab 3</a>
+        </li>
+    </ul>
+
+    <div class="tab-content mt-2">
+        <div id="content1" class="tab-pane fade show active">
+            <h3>Content for Tab 1</h3>
+            <p>This is the content for Tab 1.</p>
+            <p>Numeric Value: <span id="numericValue1"></span></p>
+        </div>
+        <div id="content2" class="tab-pane fade">
+            <h3>Content for Tab 2</h3>
+            <p>This is the content for Tab 2.</p>
+            <p>Numeric Value: <span id="numericValue2"></span></p>
+        </div>
+        <div id="content3" class="tab-pane fade">
+            <h3>Content for Tab 3</h3>
+            <p>This is the content for Tab 3.</p>
+            <p>Numeric Value: <span id="numericValue3"></span></p>
+        </div>
+    </div>
+</div>
+
+
+
 <div class="container" style="max-height: 55vh; height: 55vh; overflow: hidden;">
     <h3>Miner Locations</h3>
 
@@ -21,6 +72,3 @@
         <tbody id="tags-grid-body" />
     </table>
 </div>
-<script>
-
-</script>
