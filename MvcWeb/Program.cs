@@ -38,8 +38,8 @@ try {
   });
 
   builder.Services.AddControllersWithViews();
-  builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
-  builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
+  //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+  //builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
   builder.Services.AddRazorPages();
 
   builder.Services.AddHostedService<NotificationService>();
@@ -61,7 +61,7 @@ try {
   app.UseHttpsRedirection();
   app.UseStaticFiles();
   app.UseRouting();
-  app.UseAuthorization();
+  //app.UseAuthorization();
   app.UseCors();
   app.MapHub<MineNetHub>("/ws");
   app.MapHub<ChatHub>("/chatHub");
