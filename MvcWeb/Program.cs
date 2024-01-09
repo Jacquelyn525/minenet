@@ -5,6 +5,8 @@ using Serilog;
 using MvcWeb.Hubs;
 using MvcWeb.Services;
 using MvcWeb.Services.Hubs;
+using Microsoft.AspNetCore.Hosting;
+using System.Configuration;
 //using SignalRChat.Hubs;
 
 #region Logger
@@ -26,7 +28,7 @@ var settings = new Settings(builder.Configuration);
 #endregion Builder and Settings
 
 try {
-  
+
   builder.Services.AddCors(options => {
     options.AddDefaultPolicy(
       builder => {
@@ -38,8 +40,16 @@ try {
   });
 
   builder.Services.AddControllersWithViews();
-  //builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
-  //builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
+  builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
+
+  builder.Services.AddAuthorization(options => {
+    options.AddPolicy("GroupPolicy", policy => {
+      policy.RequireAuthenticatedUser();
+      policy.RequireClaim("groups", Configuration["AllowedGroups"]);
+    });
+  });
+
+  builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
   builder.Services.AddRazorPages();
 
   builder.Services.AddHostedService<NotificationService>();
@@ -80,3 +90,4 @@ try {
 }
 
 #endregion Catch and Finally
+
