@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.SignalR;
 
 using MvcWeb.Models.Hubs;
@@ -8,6 +9,7 @@ using ILogger = Serilog.ILogger;
 
 namespace MvcWeb.Services.Hubs;
 
+[AllowAnonymous]
 public class MineNetHub : Hub<IMineNetHub> {
 
 
@@ -32,5 +34,5 @@ public class MineNetHub : Hub<IMineNetHub> {
     _log.Information("LocationUpdate Notification Sent!");
     await Clients.All.LocationNotification(update);
   }
-  
+
 }

@@ -10,6 +10,7 @@ namespace MvcWeb.Models.Configuration {
     int EtlInterval { get; }
     int AlertInterval { get; }
     int MinerInterval { get; }
+    string HistoryADGroup { get;  }
   }
 
   
@@ -21,6 +22,7 @@ namespace MvcWeb.Models.Configuration {
     public int EtlInterval { get; set; } = 600; // 600s = 10 minutes. sounds like a good default.
     public int AlertInterval { get; set; } = 30;
     public int MinerInterval { get; set; } = 30;
+    public string HistoryADGroup { get; set; } = string.Empty;
   }
 
 

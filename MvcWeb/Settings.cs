@@ -8,6 +8,8 @@ namespace MvcWeb {
 
     public Dictionary<string, string> ConnectionStrings { get; private set; } = new Dictionary<string, string>();
 
+    public List<string> AllowedGroups { get; private set; } = new List<string>();
+
     public Settings(IConfiguration configuration) {
 
       configuration.SetProps(this, nameof(ConnectionStrings));

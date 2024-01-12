@@ -1,20 +1,14 @@
-using System;
-
 using Microsoft.AspNetCore.Mvc;
 
-using Newtonsoft.Json;
 using Serilog;
 
 using MvcWeb.Models;
-using MvcWeb.Models.MineNet;
-using MvcWeb.Paradox;
-
-
+using Microsoft.AspNetCore.Authorization;
 
 namespace GadgetStore.UI.MVC.Controllers;
 
 
-//[Route("[controller]")]
+[Authorize(Policy = "RequireWindowsGroup")]
 public class HistoryController : Controller {
 
   #region Setup

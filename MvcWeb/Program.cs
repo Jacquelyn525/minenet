@@ -7,6 +7,7 @@ using MvcWeb.Services;
 using MvcWeb.Services.Hubs;
 using Microsoft.AspNetCore.Hosting;
 using System.Configuration;
+using Microsoft.AspNetCore.Server.IISIntegration;
 //using SignalRChat.Hubs;
 
 #region Logger
@@ -32,6 +33,7 @@ try {
   builder.Services.AddCors(options => {
     options.AddDefaultPolicy(
       builder => {
+        //builder.AllowAnyOrigin()
         builder.WithOrigins("https://example.com")
           .AllowAnyHeader()
           .WithMethods("GET", "POST")
@@ -42,14 +44,27 @@ try {
   builder.Services.AddControllersWithViews();
   builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
 
+  builder.Services.Configure<IISServerOptions>(options =>
+  {
+    options.AutomaticAuthentication = true;
+  });
+
+  builder.Services.AddAuthentication(IISDefaults.AuthenticationScheme);
+  builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
+
+
+
+
+
   builder.Services.AddAuthorization(options => {
-    options.AddPolicy("GroupPolicy", policy => {
+    //options.AddPolicy("GroupPolicy", policy => {
+    options.AddPolicy("RequireWindowsGroup", policy => {
+
       policy.RequireAuthenticatedUser();
-      policy.RequireClaim("groups", Configuration["AllowedGroups"]);
+      policy.RequireClaim("groups", settings.AllowedGroups);
     });
   });
 
-  builder.Services.AddAuthorization(options => { options.FallbackPolicy = options.DefaultPolicy; });
   builder.Services.AddRazorPages();
 
   builder.Services.AddHostedService<NotificationService>();
@@ -71,7 +86,8 @@ try {
   app.UseHttpsRedirection();
   app.UseStaticFiles();
   app.UseRouting();
-  //app.UseAuthorization();
+  app.UseAuthorization();
+  app.UseAuthentication();
   app.UseCors();
   app.MapHub<MineNetHub>("/ws");
   app.MapHub<ChatHub>("/chatHub");
