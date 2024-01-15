@@ -43,9 +43,9 @@ try {
   builder.Services.AddAuthentication(NegotiateDefaults.AuthenticationScheme).AddNegotiate();
 
   builder.Services.AddAuthorization(options => {
-    options.AddPolicy("GroupPolicy", policy => {
+    options.AddPolicy("RequireWindowsGroup", policy => {
       policy.RequireAuthenticatedUser();
-      policy.RequireClaim("groups", Configuration["AllowedGroups"]);
+      policy.RequireClaim("groups", settings.MineNetConfig.HistoryUsers);
     });
   });
 
@@ -71,7 +71,8 @@ try {
   app.UseHttpsRedirection();
   app.UseStaticFiles();
   app.UseRouting();
-  //app.UseAuthorization();
+  app.UseAuthorization();
+  app.UseAuthentication();
   app.UseCors();
   app.MapHub<MineNetHub>("/ws");
   app.MapHub<ChatHub>("/chatHub");
