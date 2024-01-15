@@ -45,7 +45,7 @@ try {
   builder.Services.AddAuthorization(options => {
     options.AddPolicy("GroupPolicy", policy => {
       policy.RequireAuthenticatedUser();
-      policy.RequireClaim("groups", Configuration["AllowedGroups"]);
+      policy.RequireClaim("groups", settings.MineNetConfig.HistoryADGroups);
     });
   });
 
