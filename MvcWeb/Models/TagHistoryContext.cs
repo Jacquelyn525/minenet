@@ -38,7 +38,7 @@ public class TagHistoryContext : ITagHistoryContext {
 
     //B: Run stuff you want timed
 
-    GetHistoryArchiveDbFiles();
+    //GetHistoryArchiveDbFiles();
     timer.Stop();
     TimeSpan timeTaken = timer.Elapsed;
     string foo = "Time taken: " + timeTaken.ToString(@"m\:ss\.fff");

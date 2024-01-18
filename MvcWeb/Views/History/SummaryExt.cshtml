@@ -1,0 +1,33 @@
+@model MvcWeb.Models.TagHistoryContext;
+@{
+    ViewData["Title"] = "Miners On Shift";
+}
+
+<h1>MinersOnShift</h1>
+
+
+<table class="table table-striped w-auto" style="max-height:50vh; height: 50vh;">
+    <thead class="bg-light sticky-top">
+        <tr>
+            <th>Date Path</th>
+            <th>Time Path</th>
+            <th>File Name-Path</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var archive in Model.TagHistoryArchives)
+        {
+            <tr>
+                <td>
+                    <b>[@archive.DatePath]</b>
+                </td>
+                <td>
+                    <b>[@archive.TimePath]</b>
+                </td>
+                <td>
+                    <b>&quot;@archive.FileNamePath&quot;</b>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
