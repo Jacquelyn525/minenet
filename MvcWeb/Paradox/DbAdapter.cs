@@ -12,6 +12,8 @@ using Serilog;
 
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
+#region NOT ME
+
 namespace MvcWeb.Paradox;
 
 [SupportedOSPlatform("windows")]
@@ -95,10 +97,12 @@ public class DbAdapter {
 
   #endregion
 
+  #endregion
+
   #region History
 
   // lets be honest - this is really just the same thing as executequery - so can probably deprecate and remove.
-  private async Task<List<TagIdEntry>> queryParadoxDb(string query, string datePath, string timePath) {
+  protected async Task<List<TagIdEntry>> queryParadoxDb(string query, string datePath, string timePath) {
     var entries = await ExecuteQuery<TagIdEntry>(query, datePath, timePath);
     //sendHubUpdate($"Read {entries.Count} records... Now attempting to insert");
 
@@ -119,8 +123,16 @@ public class DbAdapter {
     }
   }
 
+  protected List<ITagHistoryArchive> ReadHistoryBase(string historyArchiveTable) {
 
-  private void ReadArchivesAsync(List<ITagHistoryArchive> archives) {
+    var abc = new List<ITagHistoryArchive>();
+
+
+    return abc;
+  }
+
+
+  protected void ReadArchivesAsync(List<ITagHistoryArchive> archives) {
 
   }
 
@@ -150,6 +162,8 @@ public class DbAdapter {
   }
 
   #endregion
+
+  #region NOT ME
 
   #region Locations
 
@@ -307,3 +321,4 @@ public class DbAdapter {
 
   #endregion
 }
+#endregion

@@ -11,6 +11,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "_ Solution Items", "_ Solut
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MvcWeb", "MvcWeb\MvcWeb.csproj", "{53511D08-00BC-46EF-8363-1360B9641F95}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ParadoxDbTests", "ParadoxDbTests\ParadoxDbTests.csproj", "{6B29AEDC-C52E-456A-8EB9-FFE9A4B19313}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{53511D08-00BC-46EF-8363-1360B9641F95}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53511D08-00BC-46EF-8363-1360B9641F95}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53511D08-00BC-46EF-8363-1360B9641F95}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6B29AEDC-C52E-456A-8EB9-FFE9A4B19313}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6B29AEDC-C52E-456A-8EB9-FFE9A4B19313}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6B29AEDC-C52E-456A-8EB9-FFE9A4B19313}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6B29AEDC-C52E-456A-8EB9-FFE9A4B19313}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
