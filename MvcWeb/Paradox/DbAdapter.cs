@@ -112,7 +112,7 @@ public class DbAdapter {
   private string HistoryQueryBase {
     get {
       var sb = new StringBuilder();
-      sb.Append("SELEC");
+      sb.Append("SELECT");
       sb.AppendLine("[Tag ID],          [Address],        [ZoneNumber],     [DateKey],        [MinuteKey],");
       sb.AppendLine("[Last Name],       [First Name],     [Zone],           [Reported],       [Battery],");
       sb.AppendLine("[Signal Strength], [Message],        [Temperature],    [Source],         [Last Zone],");

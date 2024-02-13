@@ -1,4 +1,4 @@
-@model MvcWeb.Models.TagHistoryContext;
+@* @model MvcWeb.Models.TagHistoryContext;
 
 @{
     ViewData["Title"] = "MineNet Tag ID History";
@@ -28,3 +28,42 @@
         </form>
     </div>
 </div>
+ *@
+
+ @model MvcWeb.Models.TagHistoryContext;
+@{
+  ViewData["Title"] = "Miners On Shift";
+}
+
+<h1>MinersOnShift</h1>
+
+
+<table class="table table-striped w-auto" style="max-height:50vh; height: 50vh;">
+  <thead class="bg-light sticky-top">
+    <tr>
+      <th>Date</th>
+      <th>Date Path</th>
+      <th>Time</th>
+      <th>Time Path</th>
+      <th>File Name-Path</th>
+    </tr>
+  </thead>
+  <tbody>
+    @foreach (var archive in Model.ArchiveDbs) {
+      <tr>
+        <td>
+          <b>@archive.Date - @archive.Time</b>
+        </td>
+        <td>
+          <b>&quot@archive.DatePath&quot</b>
+        </td>
+        <td>
+          <b>&quot@archive.TimePath&quot</b>
+        </td>
+        <td>
+          <b>&quot;@archive.FileNamePath&quot;</b>
+        </td>
+      </tr>
+    }
+  </tbody>
+</table>
