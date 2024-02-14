@@ -7,7 +7,6 @@ namespace MvcWeb.Models;
 
 [TransientService]
 public class TagHistoryContext {
-
   #region CTOR and locals
 
   private readonly Serilog.ILogger _log = Log.Logger;
@@ -23,13 +22,67 @@ public class TagHistoryContext {
 
   #endregion
 
+  #region Properties
+
+  public DateOnly MinDate { get => ArchiveDbs.Min(archive => archive.Date); }
+  public DateOnly MaxDate { get => ArchiveDbs.Max(archive => archive.Date); }
+
   public List<ITagHistoryArchive> ArchiveDbs { get; protected set; } = new List<ITagHistoryArchive>();
 
-  public IEnumerable<ITagIdListData> TagIdListData { get; set; } = new List<ITagIdListData>();
+  public List<TagIdEntry> TagIdListData { get; set; } = new List<TagIdEntry>();
+
+  #endregion
 
 
+  public async Task GetMinersOnShift(DateOnly date, int period) {
+    DateTime start, stop;
 
+    if (period == 0) {
+      start = combine(date, TimeOnly.ParseExact("00 00 00", "HH mm ss"));
+      stop = combine(date, TimeOnly.ParseExact("08 00 00", "HH mm ss"));
+    } else if (period == 1) {
+      start = combine(date, TimeOnly.ParseExact("08 00 01", "HH mm ss"));
+      stop = combine(date, TimeOnly.ParseExact("16 00 00", "HH mm ss"));
+    } else {
+      start = combine(date, TimeOnly.ParseExact("16 00 01", "HH mm ss"));
+      stop = combine(date, TimeOnly.ParseExact("23 59 59", "HH mm ss"));
+    }
+
+    var readTasks = ArchiveDbs
+      .Where(archive => archive.DateTime >= start && archive.DateTime <= stop)
+      .Select(archive => _dbAdapter.GetMinersOnShift(archive.DatePath, archive.TimePath));
+
+    var results = await Task.WhenAll(readTasks);
+
+    TagIdListData = MergeResults(results);
+  }
+
+
+  #region Utilities
+
+  private static DateTime combine(DateOnly date, TimeOnly time) {
+    return new DateTime(date.Year, date.Month, date.Day, time.Hour, time.Minute, time.Second);
+  }
+
+  private static List<TagIdEntry> MergeResults(List<TagIdEntry>[]? results) {
+    /*
+    // Merge the results from different databases
+    //List<TagIdEntry> mergedResult = new List<TagIdEntry>();
+
+    //foreach (var result in results) {
+    //  mergedResult.AddRange(result);
+    //}
+    */
+
+    List<TagIdEntry> mergedResult = results.SelectMany(x => x).Distinct().ToList();
+
+    return mergedResult;
+  }
+
+  #endregion
 }
+
+#region Helpers
 
 public static class IOService {
 
@@ -59,3 +112,6 @@ public static class IOService {
   }
 
 }
+
+
+#endregion

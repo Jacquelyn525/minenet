@@ -71,95 +71,13 @@ public class DbAdapter {
     });
   }
 
-  private async Task<List<MinerEntry>> ParadoxQuery(StringBuilder query) {
-    return await ExecuteQuery<MinerEntry>(query.ToString());
-  }
-
-  //static async Task<List<string>> ReadDatabaseAsync(string filePath) {
-  //  // Read data from the database file asynchronously
-  //  var connectionString = $"Data Source=(LocalDB)\\MSSQLLocalDB;AttachDbFilename={filePath};Integrated Security=True";
-  //  using (var connection = new SqlConnection(connectionString)) {
-  //    await connection.OpenAsync();
-
-  //    using (var command = new SqlCommand("SELECT * FROM YourTable", connection))
-  //    using (var reader = await command.ExecuteReaderAsync()) {
-  //      var result = new List<string>();
-
-  //      while (await reader.ReadAsync()) {
-  //        // Process each row as needed
-  //        result.Add(reader.GetString(0)); // Assuming a string column, adjust accordingly
-  //      }
-
-  //      return result;
-  //    }
-  //  }
-  //}
-
   #endregion
 
   #endregion
 
   #region History
 
-  // lets be honest - this is really just the same thing as executequery - so can probably deprecate and remove.
-  protected async Task<List<TagIdEntry>> queryParadoxDb(string query, string datePath, string timePath) {
-    var entries = await ExecuteQuery<TagIdEntry>(query, datePath, timePath);
-    //sendHubUpdate($"Read {entries.Count} records... Now attempting to insert");
-
-    return entries;
-  }
-
-  private string HistoryQueryBase {
-    get {
-      var sb = new StringBuilder();
-      sb.Append("SELECT");
-      sb.AppendLine("[Tag ID],          [Address],        [ZoneNumber],     [DateKey],        [MinuteKey],");
-      sb.AppendLine("[Last Name],       [First Name],     [Zone],           [Reported],       [Battery],");
-      sb.AppendLine("[Signal Strength], [Message],        [Temperature],    [Source],         [Last Zone],");
-      sb.AppendLine("[Last Reported],   [Rate Reported],  [Last Rate],      [Message Count],");
-      sb.AppendLine("[Message Alarm],   [MinerID]");
-
-      return sb.ToString();
-    }
-  }
-
-  protected List<ITagHistoryArchive> ReadHistoryBase(string historyArchiveTable) {
-
-    var abc = new List<ITagHistoryArchive>();
-
-
-    return abc;
-  }
-
-
-  protected void ReadArchivesAsync(List<ITagHistoryArchive> archives) {
-
-  }
-
-
-  public async Task<List<TagIdListData>> GetArchiveUniqueTagIds(ITagHistoryArchive path) {
-    var sb = new StringBuilder();
-    sb.Append("SELECT DISTINCT");
-    sb.AppendLine("[Tag ID], [First Name], [Last Name], [MinerID]");
-    sb.AppendLine($"FROM [{path.TimePath}]");
-    sb.AppendLine("ORDER BY [Tag ID] ASC");
-
-    return await ExecuteQuery<TagIdListData>(sb.ToString(), path.DatePath, path.TimePath);
-  }
-
-  public async Task<List<TagIdEntry>> GetExitZones() {
-    var query = new StringBuilder();
-    query.Append("SELECT [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]");
-    query.Append("From [  ...  ]");
-    query.Append("IN");
-    query.Append("[  ...  ] ");
-    query.Append("Where [Tag ID] = ...");
-    query.Append("UNION ALL");
-    query.Append("ORDER BY [Tag ID], [Reported], [Signal Strength]");
-
-    return await ExecuteQuery<TagIdEntry>(query.ToString());
-
-  }
+  public async Task<List<TagIdEntry>> GetMinersOnShift(string datePath, string timePath) => await ExecuteQuery<TagIdEntry>(Queries.History.Select.DailyRawFrom(timePath), datePath, timePath);
 
   #endregion
 
@@ -167,106 +85,24 @@ public class DbAdapter {
 
   #region Locations
 
-  public async Task<List<MinerEntry>> GetTags() {
-    //var query = "SELECT * from [TagReader]";
-    var query = new StringBuilder();
+  public async Task<List<MinerEntry>> GetTags() => await ExecuteQuery<MinerEntry>(Queries.Locations.GetTags);
 
-    query.Append("SELECT [Tag ID], [Address], [ZoneNumber], [DateKey], [MinuteKey], [Last Name], [First Name],");
-    query.AppendLine("[Zone], [Reported], [Battery], [Signal Strength], [Message], [Temperature], [Source],");
-    query.AppendLine("[Last Zone], [Last Reported], [Rate Reported], [Last Rate], [Message], [Count], [Message],");
-    query.AppendLine("[Alarm], [MinerID] FROM [TagReader]");
+  public async Task<List<MinerEntry>> GetLocations() => await ExecuteQuery<MinerEntry>(Queries.Locations.GetLocations);
 
+  public async Task<List<MinerEntry>> GetEquipment() => await ExecuteQuery<MinerEntry>(Queries.Locations.GetEquipment);
 
-    return await ExecuteQuery<MinerEntry>(query.ToString());
-  }
+  public async Task<List<MinerEntry>> GetSupplyCars() => await ExecuteQuery<MinerEntry>(Queries.Locations.GetSupplyCars);
 
-  public async Task<List<MinerEntry>> GetLocations() {
-
-    var query = new StringBuilder();
-
-    query.AppendLine("SELECT");
-    query.AppendLine("    t4.[Tag ID],");
-    query.AppendLine("    t4.[MinerID],");
-    query.AppendLine("    t4.[Last Name],");
-    query.AppendLine("    t4.[First Name], t4.[Address],");
-    query.AppendLine("    t4.[ZoneNumber], t4.[Zone],");
-    query.AppendLine("    t4.[Reported],");
-    query.AppendLine("    t4.[Signal Strength]");
-    query.AppendLine("FROM");
-    query.AppendLine("  (  ");
-    query.AppendLine("    SELECT");
-    query.AppendLine("        [Tag ID],");
-    query.AppendLine("        Max([Reported]) as Latest");
-    query.AppendLine("    From [TagReader]");
-    query.AppendLine("    Group By [Tag ID]");
-    query.AppendLine("  ) as t2");
-    query.AppendLine("Inner JOIN");
-    query.AppendLine("  (   ");
-    query.AppendLine("    SELECT *");
-    query.AppendLine("    From [TagReader] as t1");
-    query.AppendLine("    Where Not Exists");
-    query.AppendLine("      (   ");
-    query.AppendLine("        SELECT *");
-    query.AppendLine("        from [ExitZone] as t3");
-    query.AppendLine("        Where t1.[Address] = t3.[Address] And t1.[ZoneNumber] = t3.[ZoneNumber]");
-    query.AppendLine("      )   ");
-    query.AppendLine("  ) as t4  ");
-    query.AppendLine("  On (t4.[Tag ID] = t2.[Tag ID]) And (t4.[Reported] = t2.[Latest])");
-    query.AppendLine("Order By t4.[Last Name], t4.[First Name], t4.[Tag ID], t4.[Signal Strength] DESC");
-
-    return await ParadoxQuery(query);
-  }
-
-  public async Task<List<MinerEntry>> GetEquipment() {
-    var query = new StringBuilder();
-
-    query.Append("SELECT [Tag ID], [MinerID], [Last Name], [First Name], [Address], [ZoneNumber], [Zone], [Reported], [Signal Strength]");
-    query.AppendLine("From [Equipment]");
-    query.AppendLine(" Order By [Last Name], [First Name], [Tag ID], [Signal Strength] DESC");
-
-    return await ParadoxQuery(query);
-  }
-
-  public async Task<List<MinerEntry>> GetSupplyCars() {
-    var query = new StringBuilder();
-
-    query.AppendLine("Select");
-    query.AppendLine("      [Tag ID]");
-    query.AppendLine("    , [MinerID]");
-    query.AppendLine("    , [Last Name]");
-    query.AppendLine("    , [First Name]");
-    query.AppendLine("    , [Address]");
-    query.AppendLine("    , [ZoneNumber]");
-    query.AppendLine("    , [Zone]");
-    query.AppendLine("    , [Reported]");
-    query.AppendLine("    , [Signal Strength]");
-    query.AppendLine("FROM");
-    query.AppendLine("    [Equipment]");
-    query.AppendLine("WHERE");
-    query.AppendLine("      ([Last Name] Like '%EQUIPMENT%')  ");
-    query.AppendLine("  OR  ");
-    query.AppendLine("      ([Last Name] Like '%EQUIPMENT%' AND [First Name] Like '(%)%') ");
-    query.AppendLine("Order By [First Name]");
-
-    return await ParadoxQuery(query);
-  }
 
   #endregion
 
   #region Alarms
 
-  public async Task<List<AlertEntry>> GetAlerts() {
-
-    var query = new StringBuilder();
-
-    query.Append("SELECT [Address], [Device], [Type], [Alarm], [Occured], [Location], [Acknowledged], [Note]");
-    query.AppendLine("FROM [Alarm]");
-
-    return await ExecuteQuery<AlertEntry>(query.ToString());
-  }
+  public async Task<List<AlertEntry>> GetAlerts() => await ExecuteQuery<AlertEntry>(Queries.Alerts.GetAlerts);
 
   #endregion
 
+  #endregion
 
   #region Not Yet Implemented
 
@@ -321,4 +157,3 @@ public class DbAdapter {
 
   #endregion
 }
-#endregion

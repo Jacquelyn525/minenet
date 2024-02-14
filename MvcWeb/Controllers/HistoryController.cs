@@ -1,17 +1,8 @@
-using System;
-
 using Microsoft.AspNetCore.Mvc;
-
-using Newtonsoft.Json;
 using Serilog;
 
 using MvcWeb.Models;
-using MvcWeb.Models.MineNet;
-using MvcWeb.Paradox;
 
-
-
-//[Route("[controller]")]
 public class HistoryController : Controller {
 
   #region Setup
@@ -28,15 +19,34 @@ public class HistoryController : Controller {
 
   #endregion
 
-  #region Views
+  #region Miners On Shift
 
-  //[AllowAnonymous]
-  public async Task<IActionResult> Index() => View(_context); /* Date and Period  */
-  public async Task<IActionResult> Summary() => View(_context); /* Id, Date and Period */
-  public async Task<IActionResult> SummaryExt() => View(_context); /* Id, Date and Days */
-  public async Task<IActionResult> Snapshot() => View(_context);  /* Date and time */
+  /* Date and Period  */
+  [HttpGet]
+  public async Task<IActionResult> Index() =>View(_context);
+
+  [HttpPost]
+  public async Task<IActionResult> GetMinersOnShift(DateOnly date, int period) {
+    await _context.GetMinersOnShift(date, period);
+
+    return View("Index", _context);
+  }
 
   #endregion
 
+  #region Summary
+  public async Task<IActionResult> Summary() => View(_context); /* Id, Date and Period */
+
+  #endregion
+
+  #region Summary Extended
+  public async Task<IActionResult> SummaryExt() => View(_context); /* Id, Date and Days */
+
+  #endregion
+
+  #region Snapshot
+  public async Task<IActionResult> Snapshot() => View(_context);  /* Date and time */
+
+  #endregion
 
 }
