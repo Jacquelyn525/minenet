@@ -35,6 +35,45 @@ public class TagHistoryContext {
 
 
   public async Task GetMinersOnShift(DateOnly date, int period) {
+    TagIdListData.Clear();
+
+    DateTime start, stop;
+
+    if (period == 0) {
+      start = combine(date, TimeOnly.ParseExact("00 00 00", "HH mm ss"));
+      stop = combine(date, TimeOnly.ParseExact("08 00 00", "HH mm ss"));
+    } else if (period == 1) {
+      start = combine(date, TimeOnly.ParseExact("08 00 00", "HH mm ss"));
+      stop = combine(date, TimeOnly.ParseExact("16 00 00", "HH mm ss"));
+    } else {
+      start = combine(date, TimeOnly.ParseExact("16 00 00", "HH mm ss"));
+      stop = combine(date, TimeOnly.ParseExact("23 59 59", "HH mm ss"));
+    }
+
+    var readTasks = ArchiveDbs
+      .Where(archive => archive.DateTime >= start && archive.DateTime <= stop)
+      .Select(archive => _dbAdapter.GetMinersOnShift(archive.DatePath, archive.TimePath));
+
+    var results = await Task.WhenAll(readTasks);
+
+    var mergedResults = MergeResults(results);
+
+    var tmp = mergedResults.GroupBy(r => r.MinerID)
+      .Select(m => new TagIdEntry {
+
+      })
+      .ToList();
+
+
+    TagIdListData = MergeResults(results)
+      .OrderBy(t => t.LastName)
+      .ToList();
+    var a = 1;
+    //await GetMinersOnShift___NEW(date, period);
+  }
+
+
+  public async Task GetMinersOnShift___NEW(DateOnly date, int period) {
     DateTime start, stop;
 
     if (period == 0) {
@@ -48,15 +87,15 @@ public class TagHistoryContext {
       stop = combine(date, TimeOnly.ParseExact("23 59 59", "HH mm ss"));
     }
 
-    var readTasks = ArchiveDbs
-      .Where(archive => archive.DateTime >= start && archive.DateTime <= stop)
-      .Select(archive => _dbAdapter.GetMinersOnShift(archive.DatePath, archive.TimePath));
+    var srcTables = ArchiveDbs.Where(archive => archive.DateTime >= start && archive.DateTime <= stop);
 
-    var results = await Task.WhenAll(readTasks);
+    var temp = _dbAdapter.GetMinersOnShift2(srcTables);
 
-    TagIdListData = MergeResults(results);
+    //var results = await Task.WhenAll(readTasks);
+
+    //TagIdListData = MergeResults(results).OrderBy(t => t.LastName).ToList();
+    TagIdListData = new List<TagIdEntry>();
   }
-
 
   #region Utilities
 

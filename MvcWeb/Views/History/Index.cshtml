@@ -6,60 +6,90 @@
 
 <h1>MinersOnShift</h1>
 
-<form asp-controller="History" asp-action="GetMinersOnShift" method="post">
-  <div class="form-group">
-    <label for="date">Select Date between @Model.MinDate and @Model.MaxDate</label>
-    <input type="date"
-           id="date"
-           name="date"
-           class="form-control"
-           startDate="@Model.MinDate"
-           max="@Model.MaxDate" />
-  </div>
-  <div class="form-group">
-    <label for="period">Select Period:</label>
-    <select id="period" name="period" class="form-control">
-      <option value="morning">Morning</option>
-      <option value="afternoon">Afternoon</option>
-      <option value="evening">Evening</option>
-    </select>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+<div style="width: 300px">
+  <form asp-controller="History" asp-action="GetMinersOnShift" method="post">
+    <div class="form-group">
+      <label for="date">Select Date between @Model.MinDate and @Model.MaxDate</label>
+      <input type="date"
+             id="date"
+             name="date"
+             class="form-control"
+             startDate="@Model.MinDate"
+             max="@Model.MaxDate" />
+    </div>
+    <div class="form-group">
+      <label for="period">Select Period:</label>
+      <select id="period" name="period" class="form-control">
+        <option value="morning">Morning</option>
+        <option value="afternoon">Afternoon</option>
+        <option value="evening">Evening</option>
+      </select>
+    </div>
+    <button type="submit" class="btn btn-primary">Submit</button>
+  </form>
+</div>
 
 <hr />
 
 <h2>TagIdListData</h2>
-<table>
+<table class="table">
   <thead>
     <tr>
-      <th>Tag ID</th>
-      <th>MinerID</th>
-      <th>Last Name</th>
-      <th>First Name</th>
-      <th>Address</th>
-      <th>ZoneNumber</th>
-      <th>Zone</th>
-      <th>Reported</th>
-      <th>Signal Strength</th>
+      <th scope="col">Tag ID</th>
+      <th scope="col">MinerID</th>
+      <th scope="col">Last Name</th>
+      <th scope="col">First Name</th>
+      <th scope="col">Zone</th>
+      <th scope="col">Reported</th>
+      <th scope="col">Last Zone</th>
+      <th scope="col">Last Reported</th>
+
     </tr>
   </thead>
   <tbody>
     @foreach (var tagIdData in Model.TagIdListData) {
       <tr>
-        <!-- Add more columns as needed -->
         <td>@tagIdData.TagID</td>
         <td>@tagIdData.MinerID</td>
         <td>@tagIdData.LastName</td>
         <td>@tagIdData.FirstName</td>
-        <td>@tagIdData.Address</td>
-        <td>@tagIdData.ZoneNumber</td>
         <td>@tagIdData.Zone</td>
         <td>@tagIdData.Reported</td>
-        <td>@tagIdData.SignalStrength</td>
+        <td>@tagIdData.LastZone</td>
+        <td>@tagIdData.LastReported</td>
       </tr>
     }
   </tbody>
 </table>
 
 <hr />
+@*
+  <th>Address</th>
+  <th>ZoneNumber</th>
+  <th>DateKey</th>
+  <th>MinuteKey</th>
+  <th>Battery</th>
+  <th>Signal Strength</th>
+  <th>Message</th>
+  <th>Temperature</th>
+  <th>Source</th>
+  <th>Rate Reported</th>
+  <th>Last Rate</th>
+  <th>Message Count</th>
+  <th>Message Alarm</th>
+*@
+@*
+  <td>@tagIdData.Address</td>
+  <td>@tagIdData.ZoneNumber</td>
+  <td>@tagIdData.DateKey</td>
+  <td>@tagIdData.MinuteKey</td>
+  <td>@tagIdData.Battery</td>
+  <td>@tagIdData.SignalStrength</td>
+  <td>@tagIdData.Message</td>
+  <td>@tagIdData.Temperature</td>
+  <td>@tagIdData.Source</td>
+  <td>@tagIdData.RateReported</td>
+  <td>@tagIdData.LastRate</td>
+  <td>@tagIdData.MessageCount</td>
+  <td>@tagIdData.MessageAlarm</td>
+*@

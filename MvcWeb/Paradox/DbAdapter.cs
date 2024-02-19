@@ -38,11 +38,11 @@ public class DbAdapter {
 
   #region Private Nuts and Bolts
 
-  private async Task<List<T>> ExecuteQuery<T>(string query, string dateFolder = null, string tagDbFile = null) {
+  private async Task<List<T>> ExecuteQuery<T>(string query, string dateFolder = null) {
     return await Task.Run(async () => {
       var builder = dateFolder == null
         ? _settings.MineNetConfig.DbConnStr()
-        : _settings.MineNetConfig.HistConnStr(dateFolder, tagDbFile);
+        : _settings.MineNetConfig.HistConnStr(dateFolder);
 
       var test = new OleDbConnection();
 
@@ -77,7 +77,13 @@ public class DbAdapter {
 
   #region History
 
-  public async Task<List<TagIdEntry>> GetMinersOnShift(string datePath, string timePath) => await ExecuteQuery<TagIdEntry>(Queries.History.Select.DailyRawFrom(timePath), datePath, timePath);
+  public async Task<List<TagIdEntry>> GetMinersOnShift(string datePath, string timePath) => await ExecuteQuery<TagIdEntry>(Queries.History.Select.DailyRawFrom(timePath), datePath);
+
+  public async Task<List<TagIdEntry>> GetMinersOnShift2(IEnumerable<ITagHistoryArchive> srcTables) {
+
+
+    return new List<TagIdEntry>();
+  }
 
   #endregion
 

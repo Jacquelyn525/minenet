@@ -1,5 +1,9 @@
 using System.Text;
 
+using MvcWeb.Models;
+
+namespace MvcWeb.Paradox;
+
 public static class Queries {
 
   public static class Alerts {
@@ -112,10 +116,67 @@ public static class Queries {
 
   public static class History {
 
+    public static class QueryBuilders {
+      public static string MinersOnShift(IEnumerable<ITagHistoryArchive> srcTables) {
+        var tableCount = srcTables.Count();
+
+        var query = new StringBuilder();
+
+        switch (tableCount) {
+
+          case 0:
+            // should never happen. log and throw error.
+
+            break;
+          case 1:
+            // probably should rarely happen, but potentially can.
+            // no need to union together anything - simple select query.
+
+
+            break;
+          case 2:
+            // as above, however must now union the 2 tables.
+            query.AppendLine("SELECT                    ");
+            query.AppendLine("                          ");
+            query.AppendLine("      [Tag ID]            ");
+            query.AppendLine("  ,   [MinerID]           ");
+            query.AppendLine("  ,   [Last Name]         ");
+            query.AppendLine("  ,   [First Name]        ");
+            query.AppendLine("  ,   [Address]           ");
+            query.AppendLine("  ,   [ZoneNumber]        ");
+            query.AppendLine("  ,   [Zone]              ");
+            query.AppendLine("  ,   [Reported]          ");
+            query.AppendLine("  ,   [Signal Strength]   ");
+            query.AppendLine("                          ");
+            query.AppendLine("FROM                      ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+            query.AppendLine("              ");
+
+
+            break;
+          default:
+            // most cases should be 3+ tables to be unioned and then query the union.
+
+            break;
+        }
+
+
+
+
+
+        return string.Empty;
+      }
+    }
 
     public static class Select {
 
-      public static string DailyRaw {
+      public static StringBuilder DailyRaw {
         get {
           var sb = new StringBuilder();
           sb.Append("SELECT");
@@ -143,16 +204,35 @@ public static class Queries {
           sb.AppendLine("");
 
 
-          return sb.ToString();
+          return sb;
+        }
+      }
+      public static string DailyRawString {
+        get {
+          return DailyRaw.ToString();
         }
       }
 
       public static string DailyRawFrom(string timePath) {
-        var query = new StringBuilder(DailyRaw);
+        var query = new StringBuilder(DailyRawString);
         query.AppendLine($"FROM [{timePath}]");
+
+        // insert 'where' here
+        query.AppendLine($"WHERE [MinerID] = 2724");
+        //query.AppendLine($"OR [MinerID] = 73313");
+        //query.AppendLine($"OR [MinerID] = 77391");
+        //query.AppendLine($"OR [MinerID] = 81543");
 
         return query.ToString();
       }
+
+      public static StringBuilder DailyRawSingle(string timePath) {
+        var sb = DailyRaw;
+        sb.AppendLine($"FROM [{timePath}]");
+        return sb;
+      }
+
+
 
 
       //public async Task<List<TagIdListData>> GetArchiveUniqueTagIds(ITagHistoryArchive path) {
